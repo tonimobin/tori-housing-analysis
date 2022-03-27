@@ -1,13 +1,14 @@
 ## Miniscript for scraping Tori.fi housing data
 
-Tiny script to practise data scraping in a 'real scenario'. The script just goes over the first page of apartments that are being offered for renting at Tori.fi, the url that is being scraped can be accessed [here](https://www.tori.fi/uusimaa?q=&cg=1010&w=3&st=u&c=1014&ros=&roe=&ss=&se=&ht=&at=&mre=&ca=18&l=0&md=th).
+Tiny script to practise data scraping in a 'real scenario'. The script goes over the first page of apartments that are being offered for lease at Tori.fi and saves data off them to a .csv file. The url that is being scraped can be accessed [here](https://www.tori.fi/uusimaaq=&cg=1010&w=3&st=u&c=1014&ros=&roe=&ss=&se=&ht=&at=&mre=&ca=18&l=0&md=th).
 
 ## Running the script
 
 1. `pip install -r requirements`
 2. `python3 scrape.py`
 
-## Example output
+## Example output (.csv file viewed in Excel)
+![Screenshot 2022-03-27 155238](https://user-images.githubusercontent.com/85210617/160282329-31d99f00-9f09-4339-a1ad-2010be32bb60.png)
 
 ## Functionality of the script
 
