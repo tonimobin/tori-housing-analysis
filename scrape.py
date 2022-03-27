@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests 
+import requests, string
 from csv import writer
 
 url = "https://www.tori.fi/uusimaa?q=&cg=1010&w=3&st=u&c=1014&ros=&roe=&ss=&se=&ht=&at=&mre=&ca=18&l=0&md=th"
@@ -13,7 +13,7 @@ with open('housing.csv', 'w', encoding='utf8', newline='') as f:
     header = ['Title', 'Price (€/mo)', 'Location']
     file_write.writerow(header)
     for list in lists:
-        title = list.find('div', class_="li-title").text
+        title = list.find('div', class_="li-title").text.translate(str.maketrans('', '', string.punctuation))
         price = list.find('p', class_="list_price").text.replace(' €/kk', '')
         location = list.find('div', attrs={"class":["cat_geo", "cat_geo clean_links"]})
         location = location.find('p').text
