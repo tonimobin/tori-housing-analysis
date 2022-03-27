@@ -1,6 +1,6 @@
 ## Miniscript for scraping Tori.fi housing data
 
-Tiny script to practise data scraping in a 'real scenario'. The script goes over the first page of apartments that are being offered for lease at Tori.fi. Once basic data of the listings are retrieved (title, price, location), they are saved to a .csv file. The url that is being scraped can be accessed [here](https://www.tori.fi/uusimaaq=&cg=1010&w=3&st=u&c=1014&ros=&roe=&ss=&se=&ht=&at=&mre=&ca=18&l=0&md=th).
+Tiny script to practise data scraping in a 'real scenario'. The script goes over the first page of apartments that are being offered for lease at Tori.fi. Once basic data of the listings are retrieved (title, price, location), they are saved to a .csv file. The url that is being scraped can be accessed [here](https://www.tori.fi/uusimaa?q=&cg=1010&w=3&st=u&c=1014&ros=&roe=&ss=&se=&ht=&at=&mre=&ca=18&l=0&md=th).
 
 ## Running the script
 
