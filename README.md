@@ -4,7 +4,7 @@ Tiny script to practise data scraping in a 'real scenario'. The script goes over
 
 ## Running the script
 
-1. `pip install -r requirements`
+1. `pip install -r requirements.txt`
 2. `python3 scrape.py`
 
 ## Example output (.csv file viewed in Excel)
@@ -12,7 +12,7 @@ Tiny script to practise data scraping in a 'real scenario'. The script goes over
 
 ## Functionality of the script
 
-1. Go to Tori.fi, look at apartments being offered for rental (Only page 1).
+1. Go to Tori.fi, look at apartments being offered for rental (only page 1).
 2. Find the relevant html elements for 'Title', 'Price (€/mo)' and 'Location'.
 3. Save the findings to a .csv file
 
