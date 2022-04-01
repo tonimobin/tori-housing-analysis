@@ -4,9 +4,10 @@ Tiny script to practise data scraping in a 'real scenario'. The script goes over
 
 ## Running the script
 
-1. `pip install -r requirements.txt`
+1. `pip3 install -r requirements.txt`
 2. `python3 scrape.py`
 3. (Temporary): Multi-page results are appended to the existing housing.csv, so delete the existing file if you want completely fresh results.
+4. (Display Dash data-app): `python3 app.py` and go to url `http://localhost:8050/`, incase Dash module can't be found try: `python3 -m pip install dash`
 
 ## Example output (.csv file viewed in Excel)
 ![Screenshot 2022-03-27 155238](https://user-images.githubusercontent.com/85210617/160282329-31d99f00-9f09-4339-a1ad-2010be32bb60.png)
