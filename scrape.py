@@ -17,11 +17,11 @@ while page_num != 2:
     with open('housing.csv', 'a', encoding='utf8', newline='') as f:
         file_write = writer(f)
         if page_num == 1:
-            header = ['Title', 'Price (€/mo)', 'Location']
+            header = ['Title', 'Price', 'Location']
             file_write.writerow(header)
         for list in lists:
             title = list.find('div', class_="li-title").text.translate(str.maketrans('', '', string.punctuation))
-            price = list.find('p', class_="list_price").text.replace(' €/kk', '')
+            price = list.find('p', class_="list_price").text.replace(' €', '').replace(" ", "")
             location = list.find('div', attrs={"class":["cat_geo", "cat_geo clean_links"]})
             location = location.find('p').text
             info = [title, price, location.strip()]
