@@ -8,8 +8,7 @@ app = Dash(__name__)
 df = pd.read_csv('housing.csv', sep=',')
 
 # Drop records without pricing info
-df.dropna(subset=['Price'], inplace=True)
-df.dropna(subset=['Size'], inplace=True)
+df.dropna(subset=['Price', 'Size', 'Type'], inplace=True)
 df = df.sort_values(by=['Price'])
 
 fig = px.bar(df, x="Title", y="Price", barmode="group")

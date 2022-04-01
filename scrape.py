@@ -17,17 +17,25 @@ while page_num != 4:
     with open('housing.csv', 'a', encoding='utf8', newline='') as f:
         file_write = writer(f)
         if page_num == 1:
-            header = ['Title', 'Price', 'Size', 'Location']
+            header = ['Title', 'Price', 'Size', 'Type', 'Location']
             file_write.writerow(header)
         for list in lists:
             title = list.find('div', class_="li-title").text.translate(str.maketrans('', '', string.punctuation))
             price = list.find('p', class_="list_price").text.replace(' €', '').replace(" ", "")
-            location = list.find('div', attrs={"class":["cat_geo", "cat_geo clean_links"]})
-            location = location.find('p').text
-            size = list.find('div', attrs={"class":["list-details-container"]})
-            size = str(size.find('p', attrs={"class":["param"]}))
-            size = size[size.find(">")+1:size.find('m²')+2]
-            info = [title, price, size, location.strip()]
-            file_write.writerow(info)
 
+            location = list.find('div', attrs={"class":["cat_geo", "cat_geo clean_links"]})
+            location = location.find('p').text 
+
+            # Contains the parse that has info about size, type and year
+            list_container = list.find('div', attrs={"class":["list-details-container"]})
+            list_container = str(list_container.find('p', attrs={"class":["param"]}))
+
+            size = list_container[list_container.find(">")+1:list_container.find('m²')+2]
+            type = ""
+            types = ["Rivitalo", "Kerrostalo", "Omakotitalo", "Luhtitalo"]
+            for w in types:
+                if w in list_container:
+                    type = w
+            info = [title, price, size, type, location.strip()]
+            file_write.writerow(info)
     page_num += 1
