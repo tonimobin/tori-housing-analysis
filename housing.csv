@@ -1,41 +1,121 @@
-Title,Price,Location
-Sipoo Söderkulla Gneissikaari 13 2h  kt  s,178000,Uusimaa
-Rivitalo kaksio Juankosken keskusta,16500,Pohjois-Savo
-Modernin ilmeen omakotitalo,,Kainuu
-Vantaa Myyrmäki Apajakuja 6 2HKKS,205000,Uusimaa
-2H 56m² Pasilan puistotie 4 Helsinki,289000,Uusimaa
-Rivitalo 2hkksterassipiha,74400,Lappi
-Helsinki Siltamäki Kauriintie 4 3hkp,179000,Uusimaa
-Kerrostaloasunto 1185 m2 upea sijainti,170000,Satakunta
-Riihimäki Taipale Jyrätie 3 tupakeitttiöalkovips,109000,Kanta-Häme
-Tosi siisti yksiö,20500,Pirkanmaa
-Kerrostalo yksiö,,Keski-Suomi
-Omakoti tai paritalo 100130m2,,Etelä-Karjala
-Eikö sopivaa kotia tai vapaaajan asuntoa löydy,,Keski-Suomi
-Loisto sijainnilla rivitalokaksio,67000,Keski-Suomi
-Oma koti Oulun eteläpuolelta,,Pohjois-Pohjanmaa
-Kaksio Graanilla,138500,Etelä-Savo
-2H 555m² Sauvosaarenkatu 17 Kemi,39900,Lappi
-1H 39m² Yläniementie 2325 Laukaa,57500,Keski-Suomi
-Omakotitalo 5h k s,339000,Uusimaa
-Omakotitalo EteläKarjalasta,,Etelä-Karjala
-Hyväkuntoinen parvekkeellinen pikkukoti,138500,Varsinais-Suomi
-Rivitalo kaksio Juankoskella 58m2,,Pohjois-Savo
-Rivitalokaksio 59 m2 Nilsiässä,64000,Pohjois-Savo
-3H 585m² Suupantie 6 B Pirkkala,249000,Pirkanmaa
-Omakotitalo Kantakurikassa,149000,Etelä-Pohjanmaa
-4H 885m² Kympinkatu 7 Turku,35749,Varsinais-Suomi
-Imatra Huhtasenkylä Mäntytie 8 3h k th khh s,96000,Etelä-Karjala
-6H 146m² Salpakuja 6 Tampere,329000,Pirkanmaa
-2H 445m² Mallaskatu 14 Kaarina,22062,Varsinais-Suomi
-Yksiö Tampereelta,,Pirkanmaa
-Edullinen tilava ylimmän kerroksen perheasunto,55000,Päijät-Häme
-3H 745m² Kartanonranta 2 Jyväskylä,183000,Keski-Suomi
-3H 835m² Kivikonkaari 40 AB Helsinki,47751,Uusimaa
-Jokirantaan Haukiputaalle uniikki paritalo,539000,Pohjois-Pohjanmaa
-OKT 1957 valoisa hyvällä paikalla keskustassa,75000,Etelä-Savo
-Imatra Rajapatsas Ensontie 47 2 h  k  p,22500,Etelä-Karjala
-4H 80m² Kansantie 5 Helsinki,625000,Uusimaa
-Omakotitalo min 4huonetta,,Uusimaa
-Okerrostalo kolmio,,Lappi
-Asiakkaani etsii kotia ja maksaa välityspalkkion,,Keski-Suomi
+Title,Price,Size,Location
+Puukerrostalo,60000,,Pohjois-Pohjanmaa
+Omakotitalo Oulun tai Kempeleen alueelta,,,Pohjois-Pohjanmaa
+4H 141m² Hollinkalliontie 9 Akaa,209000,141m²,Pirkanmaa
+O yksiökaksio Oulusta,,,Pohjois-Pohjanmaa
+Kaksio Siivikkalasta,,,Pirkanmaa
+Pälkäne Asevelikylä Asevelitie 12 2hkkphwc,76000,"62,5m²",Pirkanmaa
+Etsitään sitä omaa kotia,,N,Etelä-Pohjanmaa
+Talo Sotkamon perukasta,,,Kainuu
+KT 34Hk Päätyasunto 22,,,Etelä-Savo
+Kaukolämpö kaksio Törnävältä,107000,,Etelä-Pohjanmaa
+Omakotitalo,102000,,Etelä-Savo
+Omakotitalo Kontiomäkisaviranta alueelta,,,Kainuu
+Kolmio Pirttiniemestä  kaksi autopaikkaa,200000,,Pohjois-Savo
+Omakotitalo,120000,,Satakunta
+Kaksio nurmeksen keskustassa,45000,,Pohjois-Karjala
+Omakotitalo,68800,,Keski-Suomi
+Kaksio,125000,,Pohjois-Karjala
+Peruskuntoinen kerrostaloyksiö,25000,,Pohjois-Pohjanmaa
+Omakotitalo Kalkunmäessä,139000,,Etelä-Pohjanmaa
+Unelmien remppakohde Rovaniemeltä,,,Lappi
+Kerrostaloyksiö,13900,,Pohjanmaa
+Punkalaidun 06ha tontti,139000,,Pirkanmaa
+O Leppävirta kt 3 hkparveke,,,Pohjois-Savo
+5H 975m² Kaupintie 15 Helsinki,349000,97.5m²,Uusimaa
+1hkk 34m2  Turun Koivulassa,99900,,Varsinais-Suomi
+Kyläkoulu kodiksi tai mökiksi,26000,,Pohjois-Karjala
+9H 432m² Päämajankuja 1 Akaa,495000,432m²,Pirkanmaa
+1H 25m² Valtakatu 26 A Lappeenranta,86500,25m²,Etelä-Karjala
+Kaksio tai kolmio,,,Pohjois-Pohjanmaa
+4H 84m² Martinkatu 15 Turku,275000,84m²,Varsinais-Suomi
+Purkukuntoinen omakotitalo tampereelta,,N,Pirkanmaa
+3H 515m² Linjaloistonkatu 5 Espoo,239000,51.5m²,Uusimaa
+Yksiö keskustasta,,,Pohjois-Karjala
+Etsinnässä uudehkouusi omakotitalo,,,Keski-Suomi
+Kuivempi talo etsinnässä,,N,Lappi
+Loviisantie 4 A Elimäki Kouvola 2hkkp,15000,,Kymenlaakso
+Yksiö Kausalassa,22000,,Päijät-Häme
+5H 120m² Rouskurinne 29 Kuopio,238000,120m²,Pohjois-Savo
+Rivitalo 3h k s,128000,,Pohjois-Pohjanmaa
+3H 74m² Sinirikonkuja 6 Vantaa,28146,74m²,Uusimaa
+HauhoSappee rintamamiestalo ranta oikeus tontti,55000,,Kanta-Häme
+3H 60m² Harava 3 Järvenpää,36762,60m²,Uusimaa
+3H 62m² Kivistöntie 4 Mäntsälä,218000,62m²,Uusimaa
+Yksiö Mäntän ydinkeskustassa,11800,,Pirkanmaa
+3H 78m² Koivumäentie 48 Mäntsälä,220000,78m²,Uusimaa
+Yksiö Iisalmessa,49000,,Pohjois-Savo
+1H 305m² Suurpellon puistokatu 10 Espoo,26111,30.5m²,Uusimaa
+2H 62m² Riippakoivuntie 16 Kotka,109500,62m²,Kymenlaakso
+2H 60m² Kotiopettajankuja 6 c Espoo,185000,60m²,Uusimaa
+Espoo Tapiola Suvikuja 3 3h k kph parveke,349000,"75,5m²",Uusimaa
+Turku Länsinummi Schalininkatu 7 4hkkphserill,279000,"103,5m²",Varsinais-Suomi
+2H 58m² Haapanatie 4 A Vantaa,125000,58m²,Uusimaa
+Sipoo Söderkulla Gneissikaari 13 2h  kt  s,178000,41m²,Uusimaa
+Rivitalo kaksio Juankosken keskusta,16500,,Pohjois-Savo
+Modernin ilmeen omakotitalo,,,Kainuu
+Vantaa Myyrmäki Apajakuja 6 2HKKS,205000,"51,5m²",Uusimaa
+2H 56m² Pasilan puistotie 4 Helsinki,289000,56m²,Uusimaa
+Rivitalo 2hkksterassipiha,74400,,Lappi
+Kangasala Keskusta Ruutanantie 1820 4hks,260000,"108,5m²",Pirkanmaa
+Helsinki Siltamäki Kauriintie 4 3hkp,179000,"80,5m²",Uusimaa
+2H 715m² Klemetinkatu 40 A Vaasa,173000,71.5m²,Pohjanmaa
+Kerrostaloasunto 1185 m2 upea sijainti,170000,,Satakunta
+1H 285m² Sepetlahdentie 1 A Espoo,197000,28.5m²,Uusimaa
+Riihimäki Taipale Jyrätie 3 tupakeitttiöalkovips,109000,"35,5m²",Kanta-Häme
+1H 27m² Biblioteksgatan 8 B Vaasa,147000,27m²,Pohjanmaa
+Raisio Nuorikkala Järätie 20 4mhohkthskphkhh,313000,178m²,Varsinais-Suomi
+5H 131m² Märthantie 26 Tornio,148000,131m²,Lappi
+Tosi siisti yksiö,20500,,Pirkanmaa
+2H 39m² Malturinkatu 2 B Salo,59000,39m²,Varsinais-Suomi
+1H 30m² Lumparlankatu 15 F Raisio,54000,30m²,Varsinais-Suomi
+Kerrostalo yksiö,,,Keski-Suomi
+2H 705m² Keskustie 23 Pukkila,148000,70.5m²,Uusimaa
+Omakoti tai paritalo 100130m2,,,Etelä-Karjala
+Helsinki Pasila Radanrakentajantie 4 2hkkphsla,329000,"55,5m²",Uusimaa
+Eikö sopivaa kotia tai vapaaajan asuntoa löydy,,N,Keski-Suomi
+Loisto sijainnilla rivitalokaksio,67000,,Keski-Suomi
+Oma koti Oulun eteläpuolelta,,N,Pohjois-Pohjanmaa
+Kaksio Graanilla,138500,,Etelä-Savo
+2H 555m² Sauvosaarenkatu 17 Kemi,39900,55.5m²,Lappi
+1H 39m² Yläniementie 2325 Laukaa,57500,39m²,Keski-Suomi
+5H 1775m² Annankuja 9 Aura,359000,177.5m²,Varsinais-Suomi
+5H 120m² Roantie 10 Tornio,129000,120m²,Lappi
+5H 127m² Kaksostie 19 Joensuu,199000,127m²,Pohjois-Karjala
+Omakotitalo 5h k s,339000,,Uusimaa
+Omakotitalo EteläKarjalasta,,,Etelä-Karjala
+Hyväkuntoinen parvekkeellinen pikkukoti,138500,,Varsinais-Suomi
+Rivitalo kaksio Juankoskella 58m2,,,Pohjois-Savo
+Rivitalokaksio 59 m2 Nilsiässä,64000,,Pohjois-Savo
+2H 38m² Hallituskatu 9 A Oulu,119000,38m²,Pohjois-Pohjanmaa
+4H 1115m² Vävypojanpolku 2 Jyväskylä,289000,111.5m²,Keski-Suomi
+1H 32m² Merimiehenkatu 17 A Joensuu,84000,32m²,Pohjois-Karjala
+3H 585m² Suupantie 6 B Pirkkala,249000,58.5m²,Pirkanmaa
+Omakotitalo Kantakurikassa,149000,,Etelä-Pohjanmaa
+4H 885m² Kympinkatu 7 Turku,35749,88.5m²,Varsinais-Suomi
+Imatra Huhtasenkylä Mäntytie 8 3h k th khh s,96000,94m²,Etelä-Karjala
+3H 78m² Kähärintie 57 Turku,249000,78m²,Varsinais-Suomi
+6H 146m² Salpakuja 6 Tampere,329000,146m²,Pirkanmaa
+2H 445m² Mallaskatu 14 Kaarina,22062,44.5m²,Varsinais-Suomi
+Yksiö Tampereelta,,,Pirkanmaa
+Edullinen tilava ylimmän kerroksen perheasunto,55000,,Päijät-Häme
+6H 151m² Kaasumestarinkatu 3 Seinäjoki,325000,151m²,Etelä-Pohjanmaa
+3H 745m² Kartanonranta 2 Jyväskylä,183000,74.5m²,Keski-Suomi
+Jokirantaan Haukiputaalle uniikki paritalo,539000,,Pohjois-Pohjanmaa
+2H 56m² Amiraalistonkatu 9 Turku,228000,56m²,Varsinais-Suomi
+Raasepori Tammisaari Hanhikuja 1 3 h k kph s e,179000,84m²,Uusimaa
+OKT 1957 valoisa hyvällä paikalla keskustassa,75000,,Etelä-Savo
+Imatra Rajapatsas Ensontie 47 2 h  k  p,22500,51m²,Etelä-Karjala
+4H 80m² Kansantie 5 Helsinki,625000,80m²,Uusimaa
+Omakotitalo min 4huonetta,,,Uusimaa
+Okerrostalo kolmio,,,Lappi
+3H 89m² Einar Ilmonin tie 2 B 15 Kangasala,399500,89m²,Pirkanmaa
+Asiakkaani etsii kotia ja maksaa välityspalkkion,,N,Keski-Suomi
+2H 54m² Aatoksenkatu 14 B Jyväskylä,113000,54m²,Keski-Suomi
+Vantaa Vantaanpuisto Vantaanrinne 8 4h  k  kph ,158000,88m²,Uusimaa
+Lahdessa 2HK KPH Lasitettu parveke 615 m2,48700,,Päijät-Häme
+3H 129m² Ojunmäki 2 Hollola,195000,129m²,Päijät-Häme
+Kolmio Puotilassa,200000,,Uusimaa
+430m² Hovintie 101 Mikkeli,200000,430m²,Etelä-Savo
+Saarijärvi Husuaho Lehtotie 2 2mhohkpkhphswc,39000,86m²,Keski-Suomi
+4H 1185m² Strömsintie 23 A Helsinki,498000,118.5m²,Uusimaa

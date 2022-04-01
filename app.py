@@ -9,6 +9,7 @@ df = pd.read_csv('housing.csv', sep=',')
 
 # Drop records without pricing info
 df.dropna(subset=['Price'], inplace=True)
+df.dropna(subset=['Size'], inplace=True)
 df = df.sort_values(by=['Price'])
 
 fig = px.bar(df, x="Title", y="Price", barmode="group")
@@ -28,3 +29,4 @@ app.layout = html.Div(children=[
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+
