@@ -8,10 +8,12 @@ app = Dash(__name__)
 df = pd.read_csv('housing.csv', sep=',')
 
 # Drop records without pricing info
-df.dropna(subset=['Price', 'Size', 'Type', 'Year'], inplace=True)
-df = df.astype({"Price":'int', "Year":'int'}) 
+df.dropna(subset=['Price', 'Rooms' ,'Size', 'Type', 'Year'], inplace=True)
+df = df.astype({"Price":'int', "Year":'int', "Size":'int'}) 
 df = df.sort_values(by=['Price'])
 
+#print("Key figures: \n")
+#print("Average price per square meter: ", df['Price'].mean()/df['Size'].mean())
 fig = px.bar(df, x="Title", y="Price", barmode="group")
 
 app.layout = html.Div(children=[
