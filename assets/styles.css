@@ -1,0 +1,14 @@
+@font-face {
+    font-family: “Fira Code”;
+    src: url(“fonts/FiraCode-Light.ttf) format(“truetype”);
+}
+
+*,
+html,
+body {
+    font-family: 'Fira Code', monospace;
+}
+
+html {
+    background-color: #03bafc;
+}

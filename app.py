@@ -15,7 +15,7 @@ df = df.sort_values(by=['Price'])
 fig = px.bar(df, x="Title", y="Price", barmode="group")
 
 app.layout = html.Div(children=[
-    html.H1(children='Tori housing data'),
+    html.H1(children='Tori.fi Housing Data Analysis'),
 
     html.Div(children='''
         Data!
