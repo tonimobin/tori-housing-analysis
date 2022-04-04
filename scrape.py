@@ -9,7 +9,7 @@ import re
 
 # *** Scrape the first <page_num>-1 pages, append results to existing housing.csv file ***
 page_num = 1
-while page_num != 4:
+while page_num != 315:
     url = f"https://www.tori.fi/koko_suomi/asunnot/myytavat_asunnot?ca=18&cg=1010&c=1012&w=3&o={page_num}"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -31,7 +31,7 @@ while page_num != 4:
             list_container = list.find('div', attrs={"class":["list-details-container"]})
             list_container = str(list_container.find('p', attrs={"class":["param"]}))
 
-            size_parse = re.findall("\d{2}" ,list_container[list_container.find(">")+1:list_container.find('m²')+2])
+            size_parse = re.findall(r"\d{2,5}" ,list_container[list_container.find(">")+1:list_container.find('m²')+2])
             size = ""
             if len(size_parse) > 0:
                 size = size_parse[0]

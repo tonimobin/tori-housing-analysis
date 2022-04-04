@@ -12,23 +12,24 @@ df.dropna(subset=['Price', 'Rooms' ,'Size', 'Type', 'Year'], inplace=True)
 df = df.astype({"Price":'int', "Year":'int', "Size":'int'}) 
 df = df.sort_values(by=['Price'])
 
+print(df)
 #print("Key figures: \n")
 #print("Average price per square meter: ", df['Price'].mean()/df['Size'].mean())
-fig = px.bar(df, x="Title", y="Price", barmode="group")
+# fig = px.bar(df, x="Title", y="Price", barmode="group")
 
-app.layout = html.Div(children=[
-    html.H1(children='Tori.fi Housing Data Analysis'),
+# app.layout = html.Div(children=[
+#     html.H1(children='Tori.fi Housing Data Analysis'),
 
-    html.Div(children='''
-        Data!
-    '''),
+#     html.Div(children='''
+#         Data!
+#     '''),
 
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
+#     dcc.Graph(
+#         id='example-graph',
+#         figure=fig
+#     )
+# ])
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# if __name__ == '__main__':
+#     app.run_server(debug=True)
 
