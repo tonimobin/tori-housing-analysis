@@ -8,9 +8,9 @@ import numpy as np
 import plotly.graph_objs as go
 
 app = Dash(__name__)
-df = pd.read_csv('housing.csv', sep=',')
 
-# # Drop records with empty fields
+# Load the data, drop records with empty fields, convert num data to int and sort by price
+df = pd.read_csv('housing.csv', sep=',')
 df.dropna(subset=['Price', 'Rooms' ,'Size', 'Type', 'Year'], inplace=True)
 df = df.astype({"Price":'int', "Year":'int', "Size":'int'}) 
 df = df.sort_values(by=['Price'])
@@ -30,6 +30,7 @@ np.random.seed(50)
 x_rand = np.random.randint(1, 61, 60)
 y_rand = np.random.randint(1, 61, 60)
 app.layout = html.Div([
+
     html.H1(children = 'Tori.fi Housing Data Analysis',
             style = {
                 'textAlign' : 'center',
@@ -40,6 +41,17 @@ app.layout = html.Div([
                 'textAlign' : 'left',
                 'color' : colors['sixth-color']
             }),
+    dcc.Dropdown(
+        id = 'first-dropdown',
+        options = [
+            {'label' : 'Row House', 'value': '1'},
+            {'label' : 'Block of Flats', 'value': '2'},
+            {'label' : 'Detached House', 'value': '3'},
+            {'label' : 'Balcony Access Block', 'value': '4'},
+        ],
+        value = 'NYC',
+        placeholder='Housing type'
+    ),
     dcc.Graph(
         id='scatter_chart',
         figure = {
@@ -52,11 +64,11 @@ app.layout = html.Div([
             ],
             'layout': go.Layout(
                 title = 'Price by Size plotting',
-                xaxis = {'title' : 'Random X Values'},
-                yaxis = {'title' : 'Random Y Values'},
+                xaxis = {'title' : 'Size of the house'},
+                yaxis = {'title' : 'Price of the house'},
             )
         }
-    )
+    ),
 ])
         
 

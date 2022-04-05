@@ -27,3 +27,8 @@ html {
 #example-graph {
     padding: 40px 40px 60px 60px;
 }
+
+#first-dropdown {
+    padding: 10px 10px 5px 5px;
+    width: 30%;
+}
