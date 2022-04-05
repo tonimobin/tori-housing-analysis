@@ -42,7 +42,7 @@ app.layout = html.Div([
                 'color' : colors['sixth-color']
             }),
     dcc.Dropdown(
-        id = 'first-dropdown',
+        id = 'housing-type-dropdown',
         options = [
             {'label' : 'Row House', 'value': '1'},
             {'label' : 'Block of Flats', 'value': '2'},
@@ -50,7 +50,20 @@ app.layout = html.Div([
             {'label' : 'Balcony Access Block', 'value': '4'},
         ],
         value = 'NYC',
-        placeholder='Select Housing Type',
+        placeholder='Select housing type',
+        multi=True
+    ),
+    html.Label('Select location:'),
+    dcc.Dropdown(
+        id = 'location-dropdown',
+        options = [
+            {'label' : 'Uusimaa', 'value': '1'},
+            {'label' : 'Keski-Suomi', 'value': '2'},
+            {'label' : 'Päijät-Häme', 'value': '3'},
+            {'label' : 'Pirkanmaa', 'value': '4'},
+        ],
+        value = 'NYC',
+        placeholder='Select location',
         multi=True
     ),
     html.Label('Select price:'),

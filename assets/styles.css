@@ -28,7 +28,7 @@ html {
     padding: 40px 40px 60px 60px;
 }
 
-#first-dropdown {
+#housing-type-dropdown {
     padding: 10px 10px 5px 5px;
     width: 30%;
 }
@@ -41,4 +41,9 @@ html {
 .rc-slider,
 .rc-slider-with-marks {
     padding: 10px 10px 5px 5px;
+}
+
+#location-dropdown {
+    margin: 10px 10px 5px 5px;
+    width: 30%;
 }
