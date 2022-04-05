@@ -50,7 +50,16 @@ app.layout = html.Div([
             {'label' : 'Balcony Access Block', 'value': '4'},
         ],
         value = 'NYC',
-        placeholder='Housing type'
+        placeholder='Select Housing Type',
+        multi=True
+    ),
+    html.Label('Select price:'),
+    dcc.RangeSlider(
+        id = 'price-slider',
+        min = 100000,
+        max = 500000,
+        step = 50000,
+        tooltip={"placement": "bottom", "always_visible": False}
     ),
     dcc.Graph(
         id='scatter_chart',

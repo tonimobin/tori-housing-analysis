@@ -32,3 +32,13 @@ html {
     padding: 10px 10px 5px 5px;
     width: 30%;
 }
+
+#price-slider {
+    width: 30%;
+    padding: 10px 10px 5px 5px;
+}
+
+.rc-slider,
+.rc-slider-with-marks {
+    padding: 10px 10px 5px 5px;
+}
