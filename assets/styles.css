@@ -1,3 +1,14 @@
+/* Color palette */ 
+:root {
+    --first-color: #ffffcc;
+    --second-color: #c7e9b4;
+    --third-color: #7fcdbb;
+    --fourth-color: #41b6c4;
+    --fifth-color: #1d91c0;
+    --sixth-color: #225ea8;
+    --seventh-color: #0c2c84;
+}
+
 @font-face {
     font-family: “Fira Code”;
     src: url(“fonts/FiraCode-Light.ttf) format(“truetype”);
@@ -10,5 +21,28 @@ body {
 }
 
 html {
-    background-color: #03bafc;
+    background-color: var(--first-color);
+}
+
+#example-graph {
+    padding: 40px 40px 60px 60px;
+}
+
+#housing-type-dropdown {
+    padding: 10px 10px 5px 5px;
+    width: 30%;
+}
+
+#price-slider {
+    width: 30%;
+    padding: 10px 10px 5px 5px;
+}
+
+.rc-slider,
+.rc-slider-with-marks {
+    padding: 10px 10px 5px 5px;
+}
+
+#location-dropdown {
+    width: 30%;
 }
