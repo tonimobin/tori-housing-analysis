@@ -15,8 +15,6 @@ df.dropna(subset=['Price', 'Rooms' ,'Size', 'Type', 'Year'], inplace=True)
 df = df.astype({"Price":'int', "Year":'int', "Size":'int'}) 
 df = df.sort_values(by=['Price'])
 
-# fig = px.bar(df, x="Title", y="Price", barmode="group")
-
 colors = {
     "first-color" : "#ffffcc",
     "second-color" : "#c7e9b4",
@@ -49,30 +47,32 @@ app.layout = html.Div([
             {'label' : 'Detached House', 'value': '3'},
             {'label' : 'Balcony Access Block', 'value': '4'},
         ],
-        value = 'NYC',
         placeholder='Select housing type',
         multi=True
     ),
-    html.Label('Select location:'),
+    html.Label('Location:'),
     dcc.Dropdown(
         id = 'location-dropdown',
-        options = [
-            {'label' : 'Uusimaa', 'value': '1'},
-            {'label' : 'Keski-Suomi', 'value': '2'},
-            {'label' : 'Päijät-Häme', 'value': '3'},
-            {'label' : 'Pirkanmaa', 'value': '4'},
-        ],
+        options=[{"label": x, "value": x} for x in df.Location.unique()],
         value = 'NYC',
         placeholder='Select location',
         multi=True
     ),
-    html.Label('Select price:'),
+    html.Label('Price:'),
     dcc.RangeSlider(
         id = 'price-slider',
         min = 100000,
         max = 500000,
         step = 50000,
         tooltip={"placement": "bottom", "always_visible": False}
+    ),
+    html.Label('Rooms'),
+    dcc.Checklist(
+        id="rooms-checklist",
+        options=[{"label": x, "value": x} for x in df.Rooms.unique()],
+        inline=False,
+        labelStyle={'display' : 'block'},
+        style={"height":200, "width":200, "overflow":"auto"}
     ),
     dcc.Graph(
         id='scatter_chart',
