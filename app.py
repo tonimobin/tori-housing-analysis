@@ -10,10 +10,14 @@ import plotly.graph_objs as go
 app = Dash(__name__)
 
 # Load the data, drop records with empty fields, convert num data to int and sort by price
-df = pd.read_csv('housing.csv', sep=',')
+df = pd.read_csv('full_data_cleaned_and_outliers_removed.csv', sep=',')
 df.dropna(subset=['Price', 'Rooms' ,'Size', 'Type', 'Year'], inplace=True)
 df = df.astype({"Price":'int', "Year":'int', "Size":'int'}) 
 df = df.sort_values(by=['Price'])
+
+housing_types = np.sort(df['Type'].unique())
+locations = np.sort(df['Location'].unique())
+rooms = np.sort(df['Rooms'].unique())
 
 colors = {
     "first-color" : "#ffffcc",
@@ -41,20 +45,20 @@ app.layout = html.Div([
             }),
     dcc.Dropdown(
         id = 'housing-type-dropdown',
-        options = [
-            {'label' : 'Row House', 'value': '1'},
-            {'label' : 'Block of Flats', 'value': '2'},
-            {'label' : 'Detached House', 'value': '3'},
-            {'label' : 'Balcony Access Block', 'value': '4'},
-        ],
+        options = [{"label": x, "value": x} for x in housing_types],
+        # options = [
+        #     {'label' : 'Row House', 'value': '1'},
+        #     {'label' : 'Block of Flats', 'value': '2'},
+        #     {'label' : 'Detached House', 'value': '3'},
+        #     {'label' : 'Balcony Access Block', 'value': '4'},
+        # ],
         placeholder='Select housing type',
         multi=True
     ),
     html.Label('Location:'),
     dcc.Dropdown(
         id = 'location-dropdown',
-        options=[{"label": x, "value": x} for x in df.Location.unique()],
-        value = 'NYC',
+        options=[{"label": x, "value": x} for x in locations],
         placeholder='Select location',
         multi=True
     ),
@@ -63,16 +67,34 @@ app.layout = html.Div([
         id = 'price-slider',
         min = 100000,
         max = 500000,
-        step = 50000,
-        tooltip={"placement": "bottom", "always_visible": False}
+        step = 5000,
+        marks = None,
+        tooltip={"placement": "bottom", "always_visible": True}
+    ),
+    html.Label('Year:'),
+    dcc.RangeSlider(
+        id = 'year-slider',
+        min = df.Year.min(),
+        max = df.Year.max(),
+        step = 1,
+        marks = None,
+        tooltip={"placement": "bottom", "always_visible": True}
     ),
     html.Label('Rooms'),
     dcc.Checklist(
         id="rooms-checklist",
-        options=[{"label": x, "value": x} for x in df.Rooms.unique()],
+        options=[{"label": x, "value": x} for x in rooms],
         inline=False,
         labelStyle={'display' : 'block'},
-        style={"height":200, "width":200, "overflow":"auto"}
+        style={"width":200, "overflow":"auto"}
+    ),
+    html.Label('Size:'),
+    dcc.RangeSlider(
+        id = 'size-slider',
+        min = 0,
+        max = 250,
+        step = 25,
+        tooltip={"placement": "bottom", "always_visible": False}
     ),
     dcc.Graph(
         id='scatter_chart',
