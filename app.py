@@ -47,7 +47,7 @@ app.layout = html.Div([
 
     # Data & Options
     html.Div([
-        
+
         # Data display
         html.Div(children=[
             dcc.Graph(
@@ -119,8 +119,15 @@ app.layout = html.Div([
                 labelStyle={'display': 'block'},
                 style={"width": 200, "overflow": "auto"}
             ),
-        ], style={'padding': 10, 'flex': 1}),
-    ], style={'display': 'flex', 'flex-direction': 'row'})
+        ], style={'padding': 10, 'flex': 1, 'align': "right"}),
+    ], style={'display': 'flex', 'flex-direction': 'row'}),
+        # Key figures
+        html.Div([
+            html.H1("Key figures"),
+            html.P("Average $/m²: "),
+            html.P("Amount of listings: "),
+            html.P("Average price: "),
+        ])
 ])
 
 
