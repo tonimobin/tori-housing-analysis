@@ -1,6 +1,6 @@
 /* Color palette */ 
 :root {
-    --first-color: #ffffcc;
+    --first-color: #ffffff;
     --second-color: #c7e9b4;
     --third-color: #7fcdbb;
     --fourth-color: #41b6c4;
@@ -10,8 +10,27 @@
 }
 
 @font-face {
-    font-family: “Fira Code”;
-    src: url(“fonts/FiraCode-Light.ttf) format(“truetype”);
+    font-family: "Fira Code";
+    src: url("fonts/FiraCode-Light.ttf");
+}
+
+@font-face {
+    font-family: "Palanquin";
+    src: url("fonts/PalanquinDark-Regular.ttf");
+}
+
+#title-p1 {
+    font-family: "Palanquin";
+    color: #F94F55;
+    font-size: 48px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+#title-p2 {
+    font-family: "Palanquin";
+    font-size: 48px;
+    text-align: center;
 }
 
 *,
@@ -22,6 +41,7 @@ body {
 
 html {
     background-color: var(--first-color);
+    margin: 0px 0px 0px 20px;
 }
 
 #example-graph {
@@ -38,6 +58,13 @@ html {
 #year-slider {
     width: 30%;
     padding: 10px 10px 5px 5px;
+    margin: 5px;
+}
+
+#price-label,
+#year-label {
+    padding-top: 10px;
+    border-top: 10px;
 }
 
 
