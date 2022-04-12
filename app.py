@@ -140,6 +140,10 @@ def update_graph(housing_type_dropdown, location_dropdown,
     dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
     dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
 
+    # Filter data by checklist selections
+    if rooms_checklist:
+        dff = dff[dff["Rooms"].isin(rooms_checklist)]
+
     # Filter data by dropdown selections
     if housing_type_dropdown:
         dff = dff[dff["Type"].isin(housing_type_dropdown)]
