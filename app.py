@@ -21,18 +21,6 @@ housing_types = np.sort(df["Type"].unique())
 locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
 
-colors = {
-    "first-color": "#ffffcc",
-    "second-color": "#c7e9b4",
-    "third-color": "#7fcdbb",
-    "fourth-color": "#41b6c4",
-    "fifth-color": "#1d91c0",
-    "sixth-color": "#225ea8",
-    "seventh-color": "#0c2c84",
-}
-np.random.seed(50)
-x_rand = np.random.randint(1, 61, 60)
-y_rand = np.random.randint(1, 61, 60)
 app.layout = html.Div([
     # Title
     
@@ -40,7 +28,7 @@ app.layout = html.Div([
         html.Span(id="title-p1", children="tori.fi"),
         html.Span(id="title-p2", children=" Housing Analysis"),
         html.Br(),
-    ], style={"width": "100%", "display": "flex", "align-items": "center", "justify-content": "center"}),
+    ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
 
     # Data & Options
     html.Div([
@@ -48,24 +36,8 @@ app.layout = html.Div([
         # Data display
         html.Div(children=[
             dcc.Graph(
-                id="scatter_chart",
-                figure={
-                    "data": [
-                        go.Scatter(
-                            x=df["Size"],
-                            y=df["Price"],
-                            mode="markers",
-                        )
-                    ],
-                    "layout": go.Layout(
-                        title="Price by Size plotting",
-                        xaxis={"title": "Size of the house"},
-                        yaxis={"title": "Price of the house"},
-                    )
-                }
-            ),
-            html.Div(id="location-output")
-        ], style={"padding": 10, "flex": 1}),
+                id="scatter-chart",
+        )], style={"padding": 10, "flex": 1}),
 
         # Options
         html.Div(children=[
@@ -88,6 +60,7 @@ app.layout = html.Div([
                 id="price-slider",
                 min=df.Price.min(),
                 max=df.Price.max(),
+                value=[df.Price.min(), df.Price.max()],
                 step=5000,
                 marks=None,
                 tooltip={"placement": "bottom", "always_visible": False}
@@ -107,6 +80,7 @@ app.layout = html.Div([
                 id="size-slider",
                 min=df.Size.min(),
                 max=df.Size.max(),
+                value=[df.Size.min(), df.Size.max()],
                 step=1,
                 marks=None,
                 tooltip={"placement": "bottom", "always_visible": False}
@@ -120,10 +94,12 @@ app.layout = html.Div([
                 style={"width": 200, "overflow": "auto"}
             ),
         ], style={"padding": 10, "flex": 1, "align": "right"}),
-    ], style={"display": "flex", "flex-direction": "row"}),
+    ], style={"display": "flex", "flexDirection": "row"}),
         # Key figures
         html.Div([
             html.H1("Key figures"),
+            html.P("Amount of listings: "),
+            html.Div(id="amount-listings"),
             html.P("Mean €/m²: "),
             html.Div(id="mean-price-m2-output", children=f"{math.floor(df.Price.sum() / df.Size.sum())} €"),
             html.P("Median year of construction: "),
@@ -139,9 +115,65 @@ app.layout = html.Div([
         ])
 ])
 
-@app.callback(Output("median-year-output", "children"), Input("year-slider", "value"))
-def display_output(value):
-    return f"{value}"
+# Callbacks related to key figures panel (and the only data panel for now)
+@app.callback(
+    Output("mean-price-output", "children"),
+    Output("most-expensive-output", "children"),
+    Output("cheapeast-output", "children"),
+    Output("pop-housing-output", "children"),
+    Output("median-year-output", "children"),
+    Output("mean-price-m2-output", "children"),
+    Output('amount-listings', 'children'),
+    Output('scatter-chart', 'figure'),
+    Input('housing-type-dropdown', 'value'),
+    Input('location-dropdown', 'value'),
+    Input('price-slider', 'value'),
+    Input('year-slider', 'value'),
+    Input('size-slider', 'value'),
+    Input('rooms-checklist', 'value'))
+def update_graph(housing_type_dropdown, location_dropdown,
+                 price_slider, year_slider,
+                 size_slider, rooms_checklist):
+
+    # Filter data by slider values
+    dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
+    dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
+    dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
+
+    # Filter data by checklist selections
+    if rooms_checklist:
+        dff = dff[dff["Rooms"].isin(rooms_checklist)]
+
+    # Filter data by dropdown selections
+    if housing_type_dropdown:
+        dff = dff[dff["Type"].isin(housing_type_dropdown)]
+    if location_dropdown:
+        dff = dff[dff["Location"].isin(location_dropdown)]
+    figure={
+        "data": [
+            go.Scatter(
+                x=dff["Size"],
+                y=dff["Price"],
+                mode="markers",
+            )],
+                "layout": go.Layout(
+                    title="Price by Size plotting",
+                    xaxis={"title": "Size of the house"},
+                    yaxis={"title": "Price of the house"},
+                )
+            }
+
+    # Key figures
+    dff_len = str(len(dff))
+    # Mean price (faulty equation, re-do by creating new column to df)
+    mean_price_m2 = math.floor(dff.Price.sum() / dff.Size.sum())
+    med_year = math.floor(dff["Year"].median())
+    pop_housing = dff['Type'].value_counts().idxmax()
+    cheapest = dff['Price'].min()
+    most_expensive = dff["Price"].max()
+    mean_price = math.floor(dff["Price"].mean())
+
+    return mean_price, most_expensive, cheapest, pop_housing, med_year, mean_price_m2, dff_len, figure
 
 if __name__ == "__main__":
     app.run_server(debug=True)
