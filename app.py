@@ -17,6 +17,9 @@ df.dropna(subset=["Price", "Rooms", "Size", "Type", "Year"], inplace=True)
 df = df.astype({"Price": "int", "Year": "int", "Size": "int"})
 df = df.sort_values(by=["Price"])
 
+# Create a new column, "Price_M2", which calculates €/m² for every row
+df["Price_M2"] = df.apply(lambda row: row.Price / row.Size, axis=1)
+
 housing_types = np.sort(df["Type"].unique())
 locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
@@ -166,7 +169,8 @@ def update_graph(housing_type_dropdown, location_dropdown,
     # Key figures
     dff_len = str(len(dff))
     # Mean price (faulty equation, re-do by creating new column to df)
-    mean_price_m2 = math.floor(dff.Price.sum() / dff.Size.sum())
+    #mean_price_m2 = math.floor(dff.Price.sum() / dff.Size.sum())
+    mean_price_m2 = math.floor(dff["Price_M2"].mean())
     med_year = math.floor(dff["Year"].median())
     pop_housing = dff['Type'].value_counts().idxmax()
     cheapest = dff['Price'].min()
