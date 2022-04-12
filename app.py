@@ -60,6 +60,7 @@ app.layout = html.Div([
                 id="price-slider",
                 min=df.Price.min(),
                 max=df.Price.max(),
+                value=[df.Price.min(), df.Price.max()],
                 step=5000,
                 marks=None,
                 tooltip={"placement": "bottom", "always_visible": False}
@@ -79,6 +80,7 @@ app.layout = html.Div([
                 id="size-slider",
                 min=df.Size.min(),
                 max=df.Size.max(),
+                value=[df.Size.min(), df.Size.max()],
                 step=1,
                 marks=None,
                 tooltip={"placement": "bottom", "always_visible": False}
@@ -132,7 +134,13 @@ app.layout = html.Div([
 def update_graph(housing_type_dropdown, location_dropdown,
                  price_slider, year_slider,
                  size_slider, rooms_checklist):
+
+    # Filter data by slider values
     dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
+    dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
+    dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
+
+    # Filter data by dropdown selections
     if housing_type_dropdown:
         dff = dff[dff["Type"].isin(housing_type_dropdown)]
     if location_dropdown:
