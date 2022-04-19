@@ -102,8 +102,14 @@ app.layout = html.Div([
         ], style={"padding": 10, "flex": 1, "align": "right"}),
     ], style={"display": "flex", "flexDirection": "row"}),
 
-    # Key figures
-    html.Div(id="key-figures")
+    # Key figures & Pie charts
+    html.Div([
+        html.Div(id="key-figures"),
+        html.Div(id="pie-charts", children=[
+            html.H4("Distribution of rooms"),
+            dcc.Graph(id="rooms-pie")
+        ])
+    ], style={"display": "flex", "flexDirection": "row"})
 ])
 
 # Handle updates to data when user makes different queries
@@ -209,6 +215,18 @@ def update_keyfigs(data):
                 html.P("-")
             )
         ]
+
+# Update Room pie chart
+@app.callback(Output("rooms-pie", "figure"),
+              Input("memory-output", "data"))
+def update_rooms_pie(data):
+    if data is None:
+         raise PreventUpdate
+    df = pd.DataFrame(data)
+    rooms = df["Rooms"].unique()
+    room_count = df["Rooms"].value_counts(sort=False).array
+    figure = px.pie(values=room_count, names=rooms)
+    return figure
 
 if __name__ == "__main__":
     app.run_server(debug=True)
