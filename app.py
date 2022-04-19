@@ -107,7 +107,10 @@ app.layout = html.Div([
         html.Div(id="key-figures"),
         html.Div(id="pie-charts", children=[
             html.H4("Distribution of rooms"),
-            dcc.Graph(id="rooms-pie")
+            html.Div(children=[
+                dcc.Graph(id="rooms-pie"),
+                dcc.Graph(id="types-pie")
+            ], style={"display": "flex", "flexDirection": "column"})
         ])
     ], style={"display": "flex", "flexDirection": "row"})
 ])
@@ -216,7 +219,7 @@ def update_keyfigs(data):
             )
         ]
 
-# Update Room pie chart
+# Update rooms pie chart
 @app.callback(Output("rooms-pie", "figure"),
               Input("memory-output", "data"))
 def update_rooms_pie(data):
@@ -228,6 +231,17 @@ def update_rooms_pie(data):
     figure = px.pie(values=room_count, names=rooms)
     return figure
 
+# Update types pie chart
+@app.callback(Output("types-pie", "figure"),
+              Input("memory-output", "data"))
+def update_rooms_pie(data):
+    if data is None:
+         raise PreventUpdate
+    df = pd.DataFrame(data)
+    types = df["Type"].unique()
+    type_count = df["Type"].value_counts(sort=False).array
+    figure = px.pie(values=type_count, names=types)
+    return figure
 if __name__ == "__main__":
     app.run_server(debug=True)
 
