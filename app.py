@@ -101,24 +101,9 @@ app.layout = html.Div([
             ),
         ], style={"padding": 10, "flex": 1, "align": "right"}),
     ], style={"display": "flex", "flexDirection": "row"}),
-        # Key figures
-        html.Div([
-            html.H1("Key figures"),
-            html.P("Amount of listings: "),
-            html.Div(id="amount-listings"),
-            html.P("Mean €/m²: "),
-            html.Div(id="mean-price-m2-output", children=f"{math.floor(df.Price.sum() / df.Size.sum())} €"),
-            html.P("Median year of construction: "),
-            html.Div(id="median-year-output"),
-            html.P("Most popular housing type: "),
-            html.Div(id="pop-housing-output", children=f"{df['Type'].value_counts().idxmax()}"),
-            html.P("Cheapest: "),
-            html.Div(id="cheapeast-output", children=f"{df['Price'].min()} €"),
-            html.P("Most expensive: "),
-            html.Div(id="most-expensive-output", children=f"{df['Price'].max()} €"),
-            html.P("Mean price: "),
-            html.Div(id="mean-price-output", children=f"{math.floor(df['Price'].mean())} €"),
-        ])
+
+    # Key figures
+    html.Div(id="key-figures")
 ])
 
 # Handle updates to data when user makes different queries
@@ -148,6 +133,7 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
     if location_dropdown:
         dff = dff[dff["Location"].isin(location_dropdown)]
 
+    print("after data update dict dff: ", dff)
     return dff.to_dict("records")
 
 # Update scatter chart
@@ -195,76 +181,34 @@ def update_scatter(data):
         }
         return figure
     return figure
-    # filtered_df = df.copy()
-    # if rooms_checklist or housing_type_dropdown:
-    #     if rooms_checklist:
-    #         filtered_df = df[df["Rooms"].isin(rooms_checklist)]
-    #     if housing_type_dropdown:
-    #         filtered_df = filtered_df[filtered_df["Type"].isin(housing_type_dropdown)]
-    #     return filtered_df.to_dict('records')
-    # else:
-    #     return df.to_dict('records')
 
-# Callbacks related to key figures panel (and the only data panel for now)
-# @app.callback(
-#     Output("mean-price-output", "children"),
-#     Output("most-expensive-output", "children"),
-#     Output("cheapeast-output", "children"),
-#     Output("pop-housing-output", "children"),
-#     Output("median-year-output", "children"),
-#     Output("mean-price-m2-output", "children"),
-#     Output('amount-listings', 'children'),
-#     Output('scatter-chart', 'figure'),
-#     Input('housing-type-dropdown', 'value'),
-#     Input('location-dropdown', 'value'),
-#     Input('price-slider', 'value'),
-#     Input('year-slider', 'value'),
-#     Input('size-slider', 'value'),
-#     Input('rooms-checklist', 'value'))
-# def update_graph(housing_type_dropdown, location_dropdown,
-#                  price_slider, year_slider,
-#                  size_slider, rooms_checklist):
-
-#     # Filter data by slider values
-#     dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
-#     dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
-#     dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
-
-#     # Filter data by checklist selections
-#     if rooms_checklist:
-#         dff = dff[dff["Rooms"].isin(rooms_checklist)]
-
-#     # Filter data by dropdown selections
-#     if housing_type_dropdown:
-#         dff = dff[dff["Type"].isin(housing_type_dropdown)]
-#     if location_dropdown:
-#         dff = dff[dff["Location"].isin(location_dropdown)]
-#     figure={
-#         "data": [
-#             go.Scatter(
-#                 x=dff["Size"],
-#                 y=dff["Price"],
-#                 mode="markers",
-#             )],
-#                 "layout": go.Layout(
-#                     title="Price by Size plotting",
-#                     xaxis={"title": "Size of the house"},
-#                     yaxis={"title": "Price of the house"},
-#                 )
-#             }
-
-#     # Key figures
-#     dff_len = str(len(dff))
-#     # Mean price (faulty equation, re-do by creating new column to df)
-#     #mean_price_m2 = math.floor(dff.Price.sum() / dff.Size.sum())
-#     mean_price_m2 = math.floor(dff["Price_M2"].mean())
-#     med_year = math.floor(dff["Year"].median())
-#     pop_housing = dff['Type'].value_counts().idxmax()
-#     cheapest = dff['Price'].min()
-#     most_expensive = dff["Price"].max()
-#     mean_price = math.floor(dff["Price"].mean())
-
-#     return mean_price, most_expensive, cheapest, pop_housing, med_year, mean_price_m2, dff_len, figure
+# Update key figures
+@app.callback(Output("key-figures", "children"),
+              Input("memory-output", "data"))
+def update_keyfigs(data):
+    if data is None:
+         raise PreventUpdate
+    df = pd.DataFrame(data)
+    if len(df) > 0:
+        return [
+            html.Div(
+                children=[
+                    html.H1("Key figures"),
+                    html.P(f"Amount of listings: {len(df)}"),
+                    html.P(f"Mean €/m²: {math.floor(df.Price.sum() / df.Size.sum())}€"),
+                    html.P(f"Median year of construction: {math.floor(df.Year.median())}"),
+                    html.P(f"Cheapest listing: {df.Price.min()}€"),
+                    html.P(f"Most expensive listing: {df.Price.max()}€"),
+                    html.P(f"Mean price of the listings: {math.floor(df.Price.mean())}€")
+                ]
+            )
+        ]
+    else:
+        return [
+            html.Div(
+                html.P("-")
+            )
+        ]
 
 if __name__ == "__main__":
     app.run_server(debug=True)
