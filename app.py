@@ -1,16 +1,15 @@
-from os import sep
-from tokenize import group
-from turtle import color
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
+import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import math
 
-app = Dash(__name__)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP],
+meta_tags=[{"name" : "viewport", "content" : "width=device-width, initial-scale=1.0"}])
 
 # Load the data, drop records with empty fields, convert num data to int and sort by price
 df = pd.read_csv("full_data_cleaned_and_outliers_removed.csv", sep=",")
@@ -25,96 +24,108 @@ housing_types = np.sort(df["Type"].unique())
 locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
 
-app.layout = html.Div([
+app.layout = dbc.Container([
     # Store
     dcc.Store(id="memory-output"),
 
     # Title
-    html.Div([
-        html.Span(id="title-p1", children="tori.fi"),
-        html.Span(id="title-p2", children=" Housing Analysis"),
-        html.Br(),
-    ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
-
-    # Data & Options
-    html.Div([
-
-        # Data display
-        html.Div(children=[
-            dcc.Graph(
-                id="scatter-chart",
-        )], style={"padding": 10, "flex": 1}),
-
-        # Options
-        html.Div(children=[
-            html.Label("Type:"),
-            dcc.Dropdown(
-                id="housing-type-dropdown",
-                options=[{"label": x, "value": x} for x in housing_types],
-                placeholder="Select housing type",
-                multi=True
-            ),
-            html.Label("Location:"),
-            dcc.Dropdown(
-                id="location-dropdown",
-                options=[{"label": x, "value": x} for x in locations],
-                placeholder="Select location",
-                multi=True
-            ),
-            html.Label(id="price-label",children = "Price:"),
-            dcc.RangeSlider(
-                id="price-slider",
-                min=df.Price.min(),
-                max=df.Price.max(),
-                value=[df.Price.min(), df.Price.max()],
-                step=5000,
-                marks=None,
-                tooltip={"placement": "bottom", "always_visible": False}
-            ),
-            html.Label(id="year-label", children = "Year:"),
-            dcc.RangeSlider(
-                id="year-slider",
-                min=df.Year.min(),
-                max=df.Year.max(),
-                value=[df.Year.min(), df.Year.max()],
-                step=1,
-                marks=None,
-                tooltip={"placement": "bottom", "always_visible": False}
-            ),
-            html.Label(id="size-label", children = "Size:"),
-            dcc.RangeSlider(
-                id="size-slider",
-                min=df.Size.min(),
-                max=df.Size.max(),
-                value=[df.Size.min(), df.Size.max()],
-                step=1,
-                marks=None,
-                tooltip={"placement": "bottom", "always_visible": False}
-            ),
-            html.Label("Rooms"),
-            dcc.Checklist(
-                id="rooms-checklist",
-                options=[{"label": x, "value": x} for x in rooms],
-                inline=False,
-                labelStyle={"display": "block"},
-                style={"width": 200, "overflow": "auto"}
-            ),
-        ], style={"padding": 10, "flex": 1, "align": "right"}),
-    ], style={"display": "flex", "flexDirection": "row"}),
-
-    # Key figures & Pie charts
-    html.Div([
-        html.Div(id="key-figures"),
-        html.Div(id="pie-charts", children=[
-            html.H4("Distribution of rooms"),
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+            html.Span(id="title-p1", children="tori.fi"),
+            html.Span(id="title-p2", children=" Housing Analysis"),
+            html.Br(),
+        ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
+        )
+    ]),
+    # Main data-graph and query options
+    dbc.Row([
+        # data-graph
+        dbc.Col(
             html.Div(children=[
-                dcc.Graph(id="rooms-pie"),
-                dcc.Graph(id="types-pie")
-            ], style={"display": "flex", "flexDirection": "column"})
-        ])
-    ], style={"display": "flex", "flexDirection": "row"})
-])
+                dcc.Graph(
+                    id="scatter-chart"
+                )]),
+                width={"size": 6}
+        ),
+        # query options
+        dbc.Col(
+            html.Div(children=[
+                html.Label("Type:"),
+                dcc.Dropdown(
+                    id="housing-type-dropdown",
+                    options=[{"label": x, "value": x} for x in housing_types],
+                    placeholder="Select housing type",
+                    multi=True,
+                ),
+                html.Label("Location:"),
+                dcc.Dropdown(
+                    id="location-dropdown",
+                    options=[{"label": x, "value": x} for x in locations],
+                    placeholder="Select location",
+                    multi=True
+                ),
+                html.Label(id="price-label", children="Price:"),
+                dcc.RangeSlider(
+                    id="price-slider",
+                    min=df.Price.min(),
+                    max=df.Price.max(),
+                    value=[df.Price.min(), df.Price.max()],
+                    step=5000,
+                    marks=None,
+                    tooltip={"placement": "bottom", "always_visible": False}
+                ),
+                html.Label(id="year-label", children="Year:"),
+                dcc.RangeSlider(
+                    id="year-slider",
+                    min=df.Year.min(),
+                    max=df.Year.max(),
+                    value=[df.Year.min(), df.Year.max()],
+                    step=1,
+                    marks=None,
+                    tooltip={"placement": "bottom", "always_visible": False}
+                ),
+                html.Label(id="size-label", children="Size:"),
+                dcc.RangeSlider(
+                    id="size-slider",
+                    min=df.Size.min(),
+                    max=df.Size.max(),
+                    value=[df.Size.min(), df.Size.max()],
+                    step=1,
+                    marks=None,
+                    tooltip={"placement": "bottom", "always_visible": False}
+                ),
+                html.Label("Rooms"),
+                dcc.Checklist(
+                    id="rooms-checklist",
+                    options=[{"label": x, "value": x} for x in rooms],
+                    inline=False,
+                    labelStyle={"display": "block"},
+                    style={"width": 200, "overflow": "auto"},
+                    labelClassName="mr-1"
+                ),
+            ]),
+            width={"size": 3}
+        ),
+    ], justify="around"),
+    # Key figures
+    dbc.Row([
+        dbc.Col(
+            html.Div(id="key-figures"),
+        )
+    ]),
 
+    # Pie charts
+    dbc.Row([
+        dbc.Col(
+            dcc.Graph(id="rooms-pie"), width="4"
+        ),
+        dbc.Col(    
+            dcc.Graph(id="types-pie"), width="4"
+        )
+    ]),
+], fluid=True)
+    
 # Handle updates to data when user makes different queries
 @app.callback(
     Output("memory-output", "data"),
@@ -142,7 +153,6 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
     if location_dropdown:
         dff = dff[dff["Location"].isin(location_dropdown)]
 
-    print("after data update dict dff: ", dff)
     return dff.to_dict("records")
 
 # Update scatter chart
@@ -161,8 +171,8 @@ def update_scatter(data):
                     )],
                 "layout": go.Layout(
                     title="Available listings",
-                    xaxis={"title": "Size"},
-                    yaxis={"title": "Price"},
+                    xaxis={"title": "Size m²"},
+                    yaxis={"title": "Price €"},
                 )
             }
     # If no listings are found with given features, return a message informing the user.
@@ -219,7 +229,7 @@ def update_keyfigs(data):
             )
         ]
 
-# Update rooms pie chart
+# Update rooms pie chart (to:do prevent empty dataset error for this & type)
 @app.callback(Output("rooms-pie", "figure"),
               Input("memory-output", "data"))
 def update_rooms_pie(data):

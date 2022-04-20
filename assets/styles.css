@@ -9,6 +9,19 @@
     --seventh-color: #0c2c84;
 }
 
+/* Site-wide */
+*,
+html,
+body {
+    font-family: 'Fira Code', monospace;
+}
+
+html {
+    background-color: var(--first-color);
+    /* margin: 0px 0px 0px 20px; */
+}
+
+/* Fonts */
 @font-face {
     font-family: "Fira Code";
     src: url("fonts/FiraCode-Light.ttf");
@@ -19,6 +32,7 @@
     src: url("fonts/PalanquinDark-Regular.ttf");
 }
 
+/* Title */
 #title-p1 {
     font-family: "Palanquin";
     color: #F94F55;
@@ -33,26 +47,12 @@
     text-align: center;
 }
 
-*,
-html,
-body {
-    font-family: 'Fira Code', monospace;
-}
-
-html {
-    background-color: var(--first-color);
-    margin: 0px 0px 0px 20px;
-}
-
+/* Graphs 
 #example-graph {
     padding: 40px 40px 60px 60px;
-}
+} */
 
-#housing-type-dropdown {
-    padding: 10px 10px 5px 5px;
-    width: 30%;
-}
-
+/* Sliders
 #price-slider,
 #size-slider,
 #year-slider {
@@ -60,19 +60,29 @@ html {
     padding: 10px 10px 5px 5px;
     margin: 5px;
 }
-
-#price-label,
-#year-label {
-    padding-top: 10px;
-    border-top: 10px;
-}
-
-
 .rc-slider,
 .rc-slider-with-marks {
     padding: 10px 10px 5px 5px;
 }
 
+Dropdowns */
+/* #housing-type-dropdown {
+    padding: 10px 10px 5px 5px;
+    width: 30%;
+}
+
 #location-dropdown {
     width: 30%;
 }
+
+#housing-type-dropdown {
+    padding: 10px 10px 5px 5px;
+    width: 30%;
+}
+
+Labels
+#price-label,
+#year-label {
+    padding-top: 10px;
+    border-top: 10px;
+} */
