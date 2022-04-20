@@ -46,7 +46,7 @@ app.layout = dbc.Container([
                 dcc.Graph(
                     id="scatter-chart"
                 )]),
-                width={"size": 6}
+                width={"size": 9}
         ),
         # query options
         dbc.Col(
@@ -117,13 +117,15 @@ app.layout = dbc.Container([
 
     # Pie charts
     dbc.Row([
+        html.H4("Distributions of listings by room"),
         dbc.Col(
             dcc.Graph(id="rooms-pie"), width="4"
         ),
+        html.H4("Distributions of listings by type"),
         dbc.Col(    
             dcc.Graph(id="types-pie"), width="4"
         )
-    ]),
+    ], justify="between"),
 ], fluid=True)
     
 # Handle updates to data when user makes different queries
@@ -168,6 +170,15 @@ def update_scatter(data):
                         x=df["Size"],
                         y=df["Price"],
                         mode="markers",
+                        marker=dict(
+                            color='#F38912',
+                            size=4,
+                            opacity=0.6,
+                            # line=dict(
+                            #     color='Black',
+                            #     width=1
+                            # )
+                        ),
                     )],
                 "layout": go.Layout(
                     title="Available listings",
@@ -233,24 +244,28 @@ def update_keyfigs(data):
 @app.callback(Output("rooms-pie", "figure"),
               Input("memory-output", "data"))
 def update_rooms_pie(data):
+    colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
     if data is None:
          raise PreventUpdate
     df = pd.DataFrame(data)
     rooms = df["Rooms"].unique()
     room_count = df["Rooms"].value_counts(sort=False).array
-    figure = px.pie(values=room_count, names=rooms)
+    figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)])
+    figure.update_traces(hoverinfo="value+percent", textinfo="label", marker=dict(colors = colors))
     return figure
 
 # Update types pie chart
 @app.callback(Output("types-pie", "figure"),
               Input("memory-output", "data"))
-def update_rooms_pie(data):
+def update_types_pie(data):
+    colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
     if data is None:
          raise PreventUpdate
     df = pd.DataFrame(data)
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
-    figure = px.pie(values=type_count, names=types)
+    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)])
+    figure.update_traces(hoverinfo="value+percent", textinfo="label", marker=dict(colors = colors))
     return figure
 if __name__ == "__main__":
     app.run_server(debug=True)
