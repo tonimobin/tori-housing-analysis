@@ -46,7 +46,7 @@ app.layout = dbc.Container([
                 dcc.Graph(
                     id="scatter-chart"
                 )]),
-                width={"size": 9}
+                width={"size": 8}
         ),
         # query options
         dbc.Col(
@@ -105,7 +105,7 @@ app.layout = dbc.Container([
                     labelClassName="mr-1"
                 ),
             ]),
-            width={"size": 3}
+            width={"size": 3, "offset": 1}
         ),
     ], justify="around"),
     # Key figures
@@ -216,21 +216,41 @@ def update_scatter(data):
               Input("memory-output", "data"))
 def update_keyfigs(data):
     if data is None:
-         raise PreventUpdate
+        raise PreventUpdate
     df = pd.DataFrame(data)
     if len(df) > 0:
         return [
-            html.Div(
-                children=[
-                    html.H1("Key figures"),
-                    html.P(f"Amount of listings: {len(df)}"),
-                    html.P(f"Mean €/m²: {math.floor(df.Price.sum() / df.Size.sum())}€"),
-                    html.P(f"Median year of construction: {math.floor(df.Year.median())}"),
-                    html.P(f"Cheapest listing: {df.Price.min()}€"),
-                    html.P(f"Most expensive listing: {df.Price.max()}€"),
-                    html.P(f"Mean price of the listings: {math.floor(df.Price.mean())}€")
-                ]
-            )
+            html.H1(id="key-figs-title", children="Key figures"),
+            html.Div(id="key-figs", children=[
+                dbc.Row([
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Amount of listings", className="text-center"),
+                        html.P(f"{len(df)}", className="text-center"),
+                    ], width="2"),
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Mean €/m²", className="text-center"),
+                        html.P(f"{math.floor(df.Price.sum() / df.Size.sum())} €", className="text-center")
+                    ], width="2"),
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Median year", className="text-center"),
+                        html.P(f"{math.floor(df.Year.median())}", className="text-center")
+                    ], width="2")
+                ], justify="start"),
+                dbc.Row([
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Cheapeast listing", className="text-center"),
+                        html.P(f"{df.Price.min()} €", className="text-center"),
+                    ], width="2"),
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Most expensive", className="text-center"),
+                        html.P(f"{df.Price.max()} €", className="text-center")
+                    ], width="2"),
+                    dbc.Col(children=[
+                        html.P(id="key-fig", children="Mean price", className="text-center"),
+                        html.P(f"{math.floor(df.Price.mean())} €", className="text-center")
+                    ], width="2")
+                ], justify="start")
+            ])
         ]
     else:
         return [
@@ -238,6 +258,7 @@ def update_keyfigs(data):
                 html.P("-")
             )
         ]
+
 
 # Update rooms pie chart (to:do prevent empty dataset error for this & type)
 @app.callback(Output("rooms-pie", "figure"),

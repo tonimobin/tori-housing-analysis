@@ -28,6 +28,11 @@ html {
 }
 
 @font-face {
+    font-family: "Fira Code Bold";
+    src: url("fonts/FiraCode-Bold.ttf");
+}
+
+@font-face {
     font-family: "Palanquin";
     src: url("fonts/PalanquinDark-Regular.ttf");
 }
@@ -50,6 +55,17 @@ html {
 #title-header {
     background-color: antiquewhite;
 }
+
+/* replace */
+#key-figs,
+#key-figs-title {
+    margin-bottom: 6vh;
+}
+
+#key-fig {
+    font-family: 'Fira Code Bold', monospace;
+}
+
 /* Graphs 
 #example-graph {
     padding: 40px 40px 60px 60px;
