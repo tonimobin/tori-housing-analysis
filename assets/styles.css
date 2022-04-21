@@ -47,6 +47,9 @@ html {
     text-align: center;
 }
 
+#title-header {
+    background-color: antiquewhite;
+}
 /* Graphs 
 #example-graph {
     padding: 40px 40px 60px 60px;

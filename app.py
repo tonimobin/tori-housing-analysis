@@ -117,15 +117,14 @@ app.layout = dbc.Container([
 
     # Pie charts
     dbc.Row([
-        html.H4("Distributions of listings by room"),
+        html.H4("Distributions of listings by room and type"),
         dbc.Col(
-            dcc.Graph(id="rooms-pie"), width="4"
+            dcc.Graph(id="rooms-pie"), width="3"
         ),
-        html.H4("Distributions of listings by type"),
         dbc.Col(    
-            dcc.Graph(id="types-pie"), width="4"
+            dcc.Graph(id="types-pie"), width="3"
         )
-    ], justify="between"),
+    ], justify="start"),
 ], fluid=True)
     
 # Handle updates to data when user makes different queries
@@ -171,9 +170,9 @@ def update_scatter(data):
                         y=df["Price"],
                         mode="markers",
                         marker=dict(
-                            color='#F38912',
+                            color="#A5DEF9",
                             size=4,
-                            opacity=0.6,
+                            opacity=0.8,
                             # line=dict(
                             #     color='Black',
                             #     width=1
@@ -251,7 +250,14 @@ def update_rooms_pie(data):
     rooms = df["Rooms"].unique()
     room_count = df["Rooms"].value_counts(sort=False).array
     figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)])
-    figure.update_traces(hoverinfo="value+percent", textinfo="label", marker=dict(colors = colors))
+    figure.update_traces(
+        hoverinfo="value+percent", 
+        textinfo="label+percent", 
+        marker=dict(colors = colors), 
+        hole=0.5, 
+        textposition="outside",
+    )
+    figure.update(layout_showlegend=False)
     return figure
 
 # Update types pie chart
@@ -265,7 +271,14 @@ def update_types_pie(data):
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
     figure = go.Figure(data=[go.Pie(labels=types, values=type_count)])
-    figure.update_traces(hoverinfo="value+percent", textinfo="label", marker=dict(colors = colors))
+    figure.update_traces(
+        hoverinfo="value+percent", 
+        textinfo="label+percent", 
+        marker=dict(colors = colors), 
+        hole=0.5, 
+        textposition="outside",
+    )
+    figure.update(layout_showlegend=False)
     return figure
 if __name__ == "__main__":
     app.run_server(debug=True)
