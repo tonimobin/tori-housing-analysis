@@ -223,32 +223,28 @@ def update_keyfigs(data):
             html.H1(id="key-figs-title", children="Key figures"),
             html.Div(id="key-figs", children=[
                 dbc.Row([
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Amount of listings", className="text-center"),
-                        html.P(f"{len(df)}", className="text-center"),
-                    ], width="2"),
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Mean €/m²", className="text-center"),
-                        html.P(f"{math.floor(df.Price.sum() / df.Size.sum())} €", className="text-center")
-                    ], width="2"),
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Median year", className="text-center"),
-                        html.P(f"{math.floor(df.Year.median())}", className="text-center")
-                    ], width="2")
+                    dbc.Row([
+                        dbc.Col(html.P(id="key-fig", children="Amount of listings", className="text-center"), width=2),
+                        dbc.Col(html.P(id="key-fig", children="Mean €/m²", className="text-center"), width=2),
+                        dbc.Col(html.P(id="key-fig", children="Median year of construction", className="text-center"), width=2)
+                    ], justify="start"),
+                    dbc.Row([
+                        dbc.Col(html.P(f"{len(df)}", className="text-center"), width=2),
+                        dbc.Col(html.P(f"{math.floor(df.Price.sum() / df.Size.sum())} €", className="text-center"), width=2),
+                        dbc.Col(html.P(f"{math.floor(df.Year.median())}", className="text-center"), width=2)
+                    ], justify="start"),
                 ], justify="start"),
                 dbc.Row([
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Cheapeast listing", className="text-center"),
-                        html.P(f"{df.Price.min()} €", className="text-center"),
-                    ], width="2"),
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Most expensive", className="text-center"),
-                        html.P(f"{df.Price.max()} €", className="text-center")
-                    ], width="2"),
-                    dbc.Col(children=[
-                        html.P(id="key-fig", children="Mean price", className="text-center"),
-                        html.P(f"{math.floor(df.Price.mean())} €", className="text-center")
-                    ], width="2")
+                    dbc.Row([
+                        dbc.Col(html.P(id="key-fig", children="Cheapeast listing", className="text-center"), width=2),
+                        dbc.Col(html.P(id="key-fig", children="Most expensive", className="text-center"), width=2),
+                        dbc.Col(html.P(id="key-fig", children="Mean price", className="text-center"), width=2)
+                    ]),
+                    dbc.Row([
+                        dbc.Col(html.P(f"{df.Price.min()} €", className="text-center"), width=2),
+                        dbc.Col(html.P(f"{df.Price.max()} €", className="text-center"), width=2),
+                        dbc.Col(html.P(f"{math.floor(df.Price.mean())} €", className="text-center"), width=2)
+                    ]),
                 ], justify="start")
             ])
         ]
@@ -272,7 +268,7 @@ def update_rooms_pie(data):
     room_count = df["Rooms"].value_counts(sort=False).array
     figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)])
     figure.update_traces(
-        hoverinfo="value+percent", 
+        hoverinfo="value", 
         textinfo="label+percent", 
         marker=dict(colors = colors), 
         hole=0.5, 
@@ -293,7 +289,7 @@ def update_types_pie(data):
     type_count = df["Type"].value_counts(sort=False).array
     figure = go.Figure(data=[go.Pie(labels=types, values=type_count)])
     figure.update_traces(
-        hoverinfo="value+percent", 
+        hoverinfo="value", 
         textinfo="label+percent", 
         marker=dict(colors = colors), 
         hole=0.5, 
