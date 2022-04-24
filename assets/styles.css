@@ -18,6 +18,7 @@ body {
 
 html {
     background-color: var(--first-color);
+    /*margin: 20px 200px 0px 200px;
     /* margin: 0px 0px 0px 20px; */
 }
 
@@ -25,6 +26,11 @@ html {
 @font-face {
     font-family: "Fira Code";
     src: url("fonts/FiraCode-Light.ttf");
+}
+
+@font-face {
+    font-family: "Fira Code Bold";
+    src: url("fonts/FiraCode-Bold.ttf");
 }
 
 @font-face {
@@ -36,20 +42,53 @@ html {
 #title-p1 {
     font-family: "Palanquin";
     color: #F94F55;
-    font-size: 48px;
+    font-size: 64px;
     text-align: center;
     margin-right: 10px;
+    margin-bottom: 4vh;
 }
 
 #title-p2 {
     font-family: "Palanquin";
-    font-size: 48px;
+    font-size: 64px;
     text-align: center;
+    margin-bottom: 4vh;
 }
 
 #title-header {
     background-color: antiquewhite;
 }
+
+/* replace */
+#key-figs,
+#key-figs-title {
+    margin-bottom: 6vh;
+}
+
+#key-fig {
+    font-family: 'Fira Code Bold', monospace;
+}
+
+/* animation demo */
+@property --num {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+}
+
+#test-div {
+    transition: --num 1s;
+    counter-reset: num var(--num);
+}
+
+#test-div:hover{
+    --num: 10000;
+}
+
+#test-div::after {
+    content: counter(num)
+}
+
 /* Graphs 
 #example-graph {
     padding: 40px 40px 60px 60px;
