@@ -38,6 +38,7 @@ app.layout = dbc.Container([
         ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
         )
     ]),
+
     # Main data-graph and query options
     dbc.Row([
         # data-graph
@@ -108,6 +109,8 @@ app.layout = dbc.Container([
             width={"size": 3, "offset": 1}
         ),
     ], justify="around"),
+    # *** Animation demo ***
+    html.Div(id="test-div", className="test-div", **{"data-target": 999}, children="Animated number demo: "),
     # Key figures
     dbc.Row([
         dbc.Col(
@@ -126,7 +129,7 @@ app.layout = dbc.Container([
         )
     ], justify="start"),
 ], fluid=True)
-    
+
 # Handle updates to data when user makes different queries
 @app.callback(
     Output("memory-output", "data"),
@@ -241,12 +244,12 @@ def update_keyfigs(data):
                         dbc.Col(html.P(id="key-fig", children="Mean price", className="text-center"), width=2)
                     ]),
                     dbc.Row([
-                        dbc.Col(html.P(f"{df.Price.min()} €", className="text-center"), width=2),
+                        dbc.Col(html.P(f"{df.Price.min()}", className="text-center"), width=2),
                         dbc.Col(html.P(f"{df.Price.max()} €", className="text-center"), width=2),
                         dbc.Col(html.P(f"{math.floor(df.Price.mean())} €", className="text-center"), width=2)
                     ]),
                 ], justify="start")
-            ])
+            ]),
         ]
     else:
         return [
