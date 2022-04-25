@@ -1,6 +1,6 @@
 /* Color palette */ 
 :root {
-    --first-color: #ffffff;
+    --first-color: #D08381;
     --second-color: #c7e9b4;
     --third-color: #7fcdbb;
     --fourth-color: #41b6c4;
@@ -14,10 +14,11 @@
 html,
 body {
     font-family: 'Fira Code', monospace;
+    margin: 0;
+    padding: 0;
 }
 
 html {
-    background-color: var(--first-color);
     /*margin: 20px 200px 0px 200px;
     /* margin: 0px 0px 0px 20px; */
 }
@@ -43,7 +44,7 @@ html {
     font-family: "Palanquin";
     color: #F94F55;
     font-size: 64px;
-    text-align: center;
+    text-align: start;
     margin-right: 10px;
     margin-bottom: 4vh;
 }
@@ -51,22 +52,22 @@ html {
 #title-p2 {
     font-family: "Palanquin";
     font-size: 64px;
-    text-align: center;
+    text-align: start;
     margin-bottom: 4vh;
 }
 
-#title-header {
-    background-color: antiquewhite;
+/* replace */
+#key-figs{
+    margin-bottom: 6vh;
 }
 
-/* replace */
-#key-figs,
 #key-figs-title {
-    margin-bottom: 6vh;
+    margin-bottom: 0;
 }
 
 #key-fig {
     font-family: 'Fira Code Bold', monospace;
+    color: #000000;
 }
 
 /* animation demo */
@@ -89,6 +90,22 @@ html {
     content: counter(num)
 }
 
+/* ui-revamp */
+.graph__container {
+    /*background-color: #868889;*/
+    border-radius: 0.75rem;
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+    padding: 10px 15px 10px 15px;
+}
+
+/* .Select-control {
+    padding: 5px 5px 5px 5px;
+}
+
+.Select-multi-value-wrapper,
+.Select-placeholder {
+    text-align:left;
+} */
 /* Graphs 
 #example-graph {
     padding: 40px 40px 60px 60px;

@@ -1,3 +1,4 @@
+from turtle import width
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
@@ -7,8 +8,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import math
-
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP],
+dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css],
 meta_tags=[{"name" : "viewport", "content" : "width=device-width, initial-scale=1.0"}])
 
 # Load the data, drop records with empty fields, convert num data to int and sort by price
@@ -35,17 +36,16 @@ app.layout = dbc.Container([
             html.Span(id="title-p1", children="tori.fi"),
             html.Span(id="title-p2", children=" Housing Analysis"),
             html.Br(),
-        ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
+        ], style={"width": "100%", "display": "flex", "alignItems": "start", "justifyContent": "start"}),
         )
     ]),
-
     # Main data-graph and query options
     dbc.Row([
         # data-graph
         dbc.Col(
             html.Div(children=[
                 dcc.Graph(
-                    id="scatter-chart"
+                    id="scatter-chart", className="dbc"
                 )]),
                 width={"size": 8}
         ),
@@ -69,6 +69,7 @@ app.layout = dbc.Container([
                 html.Label(id="price-label", children="Price:"),
                 dcc.RangeSlider(
                     id="price-slider",
+                    className="dbc",
                     min=df.Price.min(),
                     max=df.Price.max(),
                     value=[df.Price.min(), df.Price.max()],
@@ -79,6 +80,7 @@ app.layout = dbc.Container([
                 html.Label(id="year-label", children="Year:"),
                 dcc.RangeSlider(
                     id="year-slider",
+                    className="dbc",
                     min=df.Year.min(),
                     max=df.Year.max(),
                     value=[df.Year.min(), df.Year.max()],
@@ -89,6 +91,7 @@ app.layout = dbc.Container([
                 html.Label(id="size-label", children="Size:"),
                 dcc.RangeSlider(
                     id="size-slider",
+                    className="dbc",
                     min=df.Size.min(),
                     max=df.Size.max(),
                     value=[df.Size.min(), df.Size.max()],
@@ -99,13 +102,14 @@ app.layout = dbc.Container([
                 html.Label("Rooms"),
                 dcc.Checklist(
                     id="rooms-checklist",
-                    options=[{"label": x, "value": x} for x in rooms],
+                    className="dbc",
+                    options=[{"label": " " + x, "value": x} for x in rooms],
                     inline=False,
                     labelStyle={"display": "block"},
                     style={"width": 200, "overflow": "auto"},
                     labelClassName="mr-1"
                 ),
-            ]),
+            ], className="graph__container"),
             width={"size": 3, "offset": 1}
         ),
     ], justify="around"),
@@ -113,9 +117,9 @@ app.layout = dbc.Container([
     html.Div(id="test-div", className="test-div", **{"data-target": 999}, children="Animated number demo: "),
     # Key figures
     dbc.Row([
-        dbc.Col(
+        dbc.Col(children=[
             html.Div(id="key-figures"),
-        )
+        ])
     ]),
 
     # Pie charts
@@ -128,7 +132,7 @@ app.layout = dbc.Container([
             dcc.Graph(id="types-pie"), width="3"
         )
     ], justify="start"),
-], fluid=True)
+], fluid=True, className="dbc")
 
 # Handle updates to data when user makes different queries
 @app.callback(
@@ -173,7 +177,7 @@ def update_scatter(data):
                         y=df["Price"],
                         mode="markers",
                         marker=dict(
-                            color="#A5DEF9",
+                            color="#76A1EF",
                             size=4,
                             opacity=0.8,
                             # line=dict(
@@ -223,7 +227,7 @@ def update_keyfigs(data):
     df = pd.DataFrame(data)
     if len(df) > 0:
         return [
-            html.H1(id="key-figs-title", children="Key figures"),
+            html.H4(id="key-figs-title", children="Key figures"),
             html.Div(id="key-figs", children=[
                 dbc.Row([
                     dbc.Row([
@@ -233,7 +237,7 @@ def update_keyfigs(data):
                     ], justify="start"),
                     dbc.Row([
                         dbc.Col(html.P(f"{len(df)}", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{math.floor(df.Price.sum() / df.Size.sum())} €", className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(math.floor(df.Price.sum() / df.Size.sum())).replace(",", " "), className="text-center"), width=2),
                         dbc.Col(html.P(f"{math.floor(df.Year.median())}", className="text-center"), width=2)
                     ], justify="start"),
                 ], justify="start"),
@@ -244,9 +248,9 @@ def update_keyfigs(data):
                         dbc.Col(html.P(id="key-fig", children="Mean price", className="text-center"), width=2)
                     ]),
                     dbc.Row([
-                        dbc.Col(html.P(f"{df.Price.min()}", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{df.Price.max()} €", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{math.floor(df.Price.mean())} €", className="text-center"), width=2)
+                        dbc.Col(html.P(children="{:,} €".format(df.Price.min()).replace(",", " "), className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(df.Price.max()).replace(",", " "), className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(math.floor(df.Price.mean())).replace(",", " "), className="text-center"), width=2)
                     ]),
                 ], justify="start")
             ]),
