@@ -126,12 +126,18 @@ app.layout = dbc.Container([
     dbc.Row([
         html.H4("Distributions of listings by room and type"),
         dbc.Col(
-            dcc.Graph(id="rooms-pie"), width="3"
+            dcc.Graph(id="rooms-pie"), width="4"
         ),
         dbc.Col(    
-            dcc.Graph(id="types-pie"), width="3"
+            dcc.Graph(id="types-pie"), width="4"
         )
     ], justify="start"),
+    dbc.Row([
+        dbc.Col(
+            dcc.Graph(id="avg-prices-by-size", className="dbc"), width=6
+            #html.Div(id="pandas-testing")
+        )
+    ])
 ], fluid=True, className="dbc")
 
 # Handle updates to data when user makes different queries
@@ -163,6 +169,20 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 
     return dff.to_dict("records")
 
+# Update horizontal bar chart
+@app.callback(Output("avg-prices-by-size", "figure"), Input("memory-output", "data"))
+def update_horizontal(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    dff = df["Location"].value_counts().reset_index()
+    dff.columns = ["Location", "Counts"]
+    print(dff)
+    figure = px.bar(dff, x="Counts", y="Location", orientation="h", title="Count of listings by location", labels={"Location": "", "Counts": ""})
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
+    figure.update_traces(marker_color="green")
+    return figure
+
 # Update scatter chart
 @app.callback(Output("scatter-chart", "figure"), Input("memory-output", "data"))
 def update_scatter(data):
@@ -177,7 +197,7 @@ def update_scatter(data):
                         y=df["Price"],
                         mode="markers",
                         marker=dict(
-                            color="#76A1EF",
+                            color="green",
                             size=4,
                             opacity=0.8,
                             # line=dict(
@@ -187,9 +207,9 @@ def update_scatter(data):
                         ),
                     )],
                 "layout": go.Layout(
-                    title="Available listings",
-                    xaxis={"title": "Size m²"},
-                    yaxis={"title": "Price €"},
+                    title= {"text": "Available listings", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 26},
+                    xaxis={"title": "Size m²", "showgrid" : False},
+                    yaxis={"title": "Price €", "showgrid" : False},
                 )
             }
     # If no listings are found with given features, return a message informing the user.
@@ -294,7 +314,7 @@ def update_types_pie(data):
     df = pd.DataFrame(data)
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
-    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)])
+    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], layout={"margin": {"t": 0, "b": 0, "r": 0, "l": 0}})
     figure.update_traces(
         hoverinfo="value", 
         textinfo="label+percent", 
