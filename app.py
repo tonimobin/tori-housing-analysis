@@ -134,8 +134,11 @@ app.layout = dbc.Container([
     ], justify="start"),
     dbc.Row([
         dbc.Col(
-            dcc.Graph(id="avg-prices-by-size", className="dbc"), width=6
+            dcc.Graph(id="avg-prices-by-size", className="dbc"), width=4
             #html.Div(id="pandas-testing")
+        ),
+        dbc.Col(
+            dcc.Graph(id="price-m2-median-by-loc", className="dbc"), width=4
         )
     ])
 ], fluid=True, className="dbc")
@@ -169,18 +172,37 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 
     return dff.to_dict("records")
 
-# Update horizontal bar chart
+# Update median price by size (horizontal bar chart)
+@app.callback(Output("price-m2-median-by-loc", "figure"), Input("memory-output", "data"))
+def update_price_horizontal(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    # dff = df["Location"].value_counts().reset_index()
+    # dff.columns = ["Location", "Counts"]
+    location_grp = df.groupby("Location")
+    dff = location_grp["Price_M2"].median().round(0)
+    dff = dff.reset_index()
+    dff.columns = ["Location", "€/m²"]
+    dff = dff.sort_values("€/m²", ascending=False)
+    figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
+    title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+    figure.update_traces(marker_color="#3B6E80", textposition="outside", cliponaxis=False)
+    return figure
+
+# Update count of listings by location (horizontal bar chart)
 @app.callback(Output("avg-prices-by-size", "figure"), Input("memory-output", "data"))
-def update_horizontal(data):
+def update_count_horizontal(data):
     if data is None:
         raise PreventUpdate
     df = pd.DataFrame(data)
     dff = df["Location"].value_counts().reset_index()
     dff.columns = ["Location", "Counts"]
-    print(dff)
     figure = px.bar(dff, x="Counts", y="Location", orientation="h", title="Count of listings by location", labels={"Location": "", "Counts": ""})
-    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
-    figure.update_traces(marker_color="green")
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
+    title= {"text": "Count of listings by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+    figure.update_traces(marker_color="#679F96")
     return figure
 
 # Update scatter chart
@@ -197,13 +219,10 @@ def update_scatter(data):
                         y=df["Price"],
                         mode="markers",
                         marker=dict(
-                            color="green",
+                            color="#76A1EF",
                             size=4,
                             opacity=0.8,
-                            # line=dict(
-                            #     color='Black',
-                            #     width=1
-                            # )
+                            # line=dict(color='Black', width=1)
                         ),
                     )],
                 "layout": go.Layout(
@@ -215,22 +234,11 @@ def update_scatter(data):
     # If no listings are found with given features, return a message informing the user.
     except(KeyError):
         figure = {
-            "layout": {
-                "xaxis": {
-                    "visible": "false"
-                },
-                "yaxis": {
-                    "visible": "false"
-                },
+            "layout": {"xaxis": { "visible": "false"},
+                "yaxis": { "visible": "false" },
                 "annotations": [
-                    {
-                        "text": "No available listings with given features.",
-                        "xref": "paper",
-                        "yref": "paper",
-                        "showarrow": "false",
-                        "font": {
-                                "size": 28
-                        }
+                    {"text": "No available listings with given features.", "xref": "paper", "yref": "paper",
+                        "showarrow": "false", "font": { "size": 28 }
                     }
                 ]
             }
@@ -314,7 +322,8 @@ def update_types_pie(data):
     df = pd.DataFrame(data)
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
-    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], layout={"margin": {"t": 0, "b": 0, "r": 0, "l": 0}})
+    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], 
+    layout={"margin": {"t": 0, "b": 0, "r": 0, "l": 0}})
     figure.update_traces(
         hoverinfo="value", 
         textinfo="label+percent", 
