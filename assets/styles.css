@@ -37,6 +37,27 @@ html {
 
 }
 
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background: #58B505;
+    text-align: center;
+    
+}
+
+.footer-icon-hy,
+.footer-icon-gh {
+    margin: 16px 12px 16px 8px
+}
+
+.footer-text {
+    position: relative;
+    text-align:start;
+    margin-bottom: 20px;
+}
+
 #price-slider,
 #year-slider,
 #size-slider {
@@ -66,7 +87,7 @@ html {
 
 #title-p2 {
     font-family: "Palanquin";
-    font-size: 64px;
+    font-size: 62px;
     color: #fff;
     text-shadow: black 0px 0px 0px 2px
 

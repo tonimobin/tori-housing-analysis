@@ -105,12 +105,12 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.Label("Rooms"),
             dcc.Checklist(
                 id="rooms-checklist",
-                className="dbc",
-                options=[{"label": " " + x, "value": x} for x in rooms],
-                inline=False,
+                #className="dbc",
+                options=[{"label": "" + x, "value": x} for x in rooms],
+                #inline=False,
                 #labelStyle={"display": "block"},
-                style={"overflow": "auto"},
-                labelClassName="mr-1"
+                #style={"overflow": "auto"},
+                #labelClassName="mr-1"
             ),
         ]),
     ]),
@@ -118,6 +118,21 @@ app.layout = html.Div(className="my-dash-app", children=[
     html.Div("Labore magna amet ut et ea fugiat aliqua nulla mollit irure labore aliquip consectetur."),
     html.Div("Incididunt nisi ipsum aute est nisi ut consequat voluptate. Voluptate reprehenderit aute sit consectetur ullamco et occaecat laboris laborum voluptate velit. Officia tempor exercitation Lorem labore enim duis irure ex. Laborum sint aute ea ex ullamco. Ad ullamco aliquip duis exercitation eu ullamco aliquip veniam consectetur."),
     html.Div("Consequat sit reprehenderit fugiat pariatur aute eu ex occaecat ad labore id dolore. Duis laborum excepteur ea occaecat adipisicing qui qui in enim. Laboris anim eu reprehenderit deserunt nulla sint do tempor Lorem labore non. Tempor pariatur ullamco est ullamco dolor ea cupidatat minim nostrud dolor irure amet. Ut ex enim duis deserunt reprehenderit."),
+    html.Footer(className="footer", children=[
+        html.A(href="https://github.com/tonimobin/tori-housing-data-scrape-script", target="_blank", children=[
+            html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("github-logo-small.png")),
+        ]),
+        html.A(href="https://studies.helsinki.fi/courses/cur/hy-opt-cur-2122-f77f1644-2bfe-4693-a6bb-47596553c0c4/Interactive_Data_Visualization_Lectures",
+        target="_blank", children=[
+            html.Img(className="footer-icon footer-icon-hy", src=app.get_asset_url("hy-logo-small.png")),
+        ]),
+        html.A(href="https://www.tori.fi/",
+        target="_blank", children=[
+            html.Img(className="footer-icon footer-icon-hy", src=app.get_asset_url("tori-logo-small.png")),
+        ]),
+        #html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("GitHub-Mark-32px.png")),
+        #html.Span(""),
+    ])
 ])
 # app.layout = dbc.Container([
 #     # Store
