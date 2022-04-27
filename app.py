@@ -1,3 +1,4 @@
+from turtle import width
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
@@ -7,8 +8,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import math
-
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP],
+dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css],
 meta_tags=[{"name" : "viewport", "content" : "width=device-width, initial-scale=1.0"}])
 
 # Load the data, drop records with empty fields, convert num data to int and sort by price
@@ -35,17 +36,16 @@ app.layout = dbc.Container([
             html.Span(id="title-p1", children="tori.fi"),
             html.Span(id="title-p2", children=" Housing Analysis"),
             html.Br(),
-        ], style={"width": "100%", "display": "flex", "alignItems": "center", "justifyContent": "center"}),
+        ], style={"width": "100%", "display": "flex", "alignItems": "start", "justifyContent": "start"}),
         )
     ]),
-
     # Main data-graph and query options
     dbc.Row([
         # data-graph
         dbc.Col(
             html.Div(children=[
                 dcc.Graph(
-                    id="scatter-chart"
+                    id="scatter-chart", className="dbc"
                 )]),
                 width={"size": 8}
         ),
@@ -69,6 +69,7 @@ app.layout = dbc.Container([
                 html.Label(id="price-label", children="Price:"),
                 dcc.RangeSlider(
                     id="price-slider",
+                    className="dbc",
                     min=df.Price.min(),
                     max=df.Price.max(),
                     value=[df.Price.min(), df.Price.max()],
@@ -79,6 +80,7 @@ app.layout = dbc.Container([
                 html.Label(id="year-label", children="Year:"),
                 dcc.RangeSlider(
                     id="year-slider",
+                    className="dbc",
                     min=df.Year.min(),
                     max=df.Year.max(),
                     value=[df.Year.min(), df.Year.max()],
@@ -89,6 +91,7 @@ app.layout = dbc.Container([
                 html.Label(id="size-label", children="Size:"),
                 dcc.RangeSlider(
                     id="size-slider",
+                    className="dbc",
                     min=df.Size.min(),
                     max=df.Size.max(),
                     value=[df.Size.min(), df.Size.max()],
@@ -99,13 +102,14 @@ app.layout = dbc.Container([
                 html.Label("Rooms"),
                 dcc.Checklist(
                     id="rooms-checklist",
-                    options=[{"label": x, "value": x} for x in rooms],
+                    className="dbc",
+                    options=[{"label": " " + x, "value": x} for x in rooms],
                     inline=False,
                     labelStyle={"display": "block"},
                     style={"width": 200, "overflow": "auto"},
                     labelClassName="mr-1"
                 ),
-            ]),
+            ], className="graph__container"),
             width={"size": 3, "offset": 1}
         ),
     ], justify="around"),
@@ -113,22 +117,31 @@ app.layout = dbc.Container([
     html.Div(id="test-div", className="test-div", **{"data-target": 999}, children="Animated number demo: "),
     # Key figures
     dbc.Row([
-        dbc.Col(
+        dbc.Col(children=[
             html.Div(id="key-figures"),
-        )
+        ])
     ]),
 
     # Pie charts
     dbc.Row([
         html.H4("Distributions of listings by room and type"),
         dbc.Col(
-            dcc.Graph(id="rooms-pie"), width="3"
+            dcc.Graph(id="rooms-pie"), width="4"
         ),
         dbc.Col(    
-            dcc.Graph(id="types-pie"), width="3"
+            dcc.Graph(id="types-pie"), width="4"
         )
     ], justify="start"),
-], fluid=True)
+    dbc.Row([
+        dbc.Col(
+            dcc.Graph(id="avg-prices-by-size", className="dbc"), width=4
+            #html.Div(id="pandas-testing")
+        ),
+        dbc.Col(
+            dcc.Graph(id="price-m2-median-by-loc", className="dbc"), width=4
+        )
+    ])
+], fluid=True, className="dbc")
 
 # Handle updates to data when user makes different queries
 @app.callback(
@@ -159,6 +172,39 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 
     return dff.to_dict("records")
 
+# Update median price by size (horizontal bar chart)
+@app.callback(Output("price-m2-median-by-loc", "figure"), Input("memory-output", "data"))
+def update_price_horizontal(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    # dff = df["Location"].value_counts().reset_index()
+    # dff.columns = ["Location", "Counts"]
+    location_grp = df.groupby("Location")
+    dff = location_grp["Price_M2"].median().round(0)
+    dff = dff.reset_index()
+    dff.columns = ["Location", "€/m²"]
+    dff = dff.sort_values("€/m²", ascending=False)
+    figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
+    title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+    figure.update_traces(marker_color="#3B6E80", textposition="outside", cliponaxis=False)
+    return figure
+
+# Update count of listings by location (horizontal bar chart)
+@app.callback(Output("avg-prices-by-size", "figure"), Input("memory-output", "data"))
+def update_count_horizontal(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    dff = df["Location"].value_counts().reset_index()
+    dff.columns = ["Location", "Counts"]
+    figure = px.bar(dff, x="Counts", y="Location", orientation="h", title="Count of listings by location", labels={"Location": "", "Counts": ""})
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
+    title= {"text": "Count of listings by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+    figure.update_traces(marker_color="#679F96")
+    return figure
+
 # Update scatter chart
 @app.callback(Output("scatter-chart", "figure"), Input("memory-output", "data"))
 def update_scatter(data):
@@ -173,40 +219,26 @@ def update_scatter(data):
                         y=df["Price"],
                         mode="markers",
                         marker=dict(
-                            color="#A5DEF9",
+                            color="#76A1EF",
                             size=4,
                             opacity=0.8,
-                            # line=dict(
-                            #     color='Black',
-                            #     width=1
-                            # )
+                            # line=dict(color='Black', width=1)
                         ),
                     )],
                 "layout": go.Layout(
-                    title="Available listings",
-                    xaxis={"title": "Size m²"},
-                    yaxis={"title": "Price €"},
+                    title= {"text": "Available listings", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 26},
+                    xaxis={"title": "Size m²", "showgrid" : False},
+                    yaxis={"title": "Price €", "showgrid" : False},
                 )
             }
     # If no listings are found with given features, return a message informing the user.
     except(KeyError):
         figure = {
-            "layout": {
-                "xaxis": {
-                    "visible": "false"
-                },
-                "yaxis": {
-                    "visible": "false"
-                },
+            "layout": {"xaxis": { "visible": "false"},
+                "yaxis": { "visible": "false" },
                 "annotations": [
-                    {
-                        "text": "No available listings with given features.",
-                        "xref": "paper",
-                        "yref": "paper",
-                        "showarrow": "false",
-                        "font": {
-                                "size": 28
-                        }
+                    {"text": "No available listings with given features.", "xref": "paper", "yref": "paper",
+                        "showarrow": "false", "font": { "size": 28 }
                     }
                 ]
             }
@@ -223,7 +255,7 @@ def update_keyfigs(data):
     df = pd.DataFrame(data)
     if len(df) > 0:
         return [
-            html.H1(id="key-figs-title", children="Key figures"),
+            html.H4(id="key-figs-title", children="Key figures"),
             html.Div(id="key-figs", children=[
                 dbc.Row([
                     dbc.Row([
@@ -233,7 +265,7 @@ def update_keyfigs(data):
                     ], justify="start"),
                     dbc.Row([
                         dbc.Col(html.P(f"{len(df)}", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{math.floor(df.Price.sum() / df.Size.sum())} €", className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(math.floor(df.Price.sum() / df.Size.sum())).replace(",", " "), className="text-center"), width=2),
                         dbc.Col(html.P(f"{math.floor(df.Year.median())}", className="text-center"), width=2)
                     ], justify="start"),
                 ], justify="start"),
@@ -244,9 +276,9 @@ def update_keyfigs(data):
                         dbc.Col(html.P(id="key-fig", children="Mean price", className="text-center"), width=2)
                     ]),
                     dbc.Row([
-                        dbc.Col(html.P(f"{df.Price.min()}", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{df.Price.max()} €", className="text-center"), width=2),
-                        dbc.Col(html.P(f"{math.floor(df.Price.mean())} €", className="text-center"), width=2)
+                        dbc.Col(html.P(children="{:,} €".format(df.Price.min()).replace(",", " "), className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(df.Price.max()).replace(",", " "), className="text-center"), width=2),
+                        dbc.Col(html.P(children="{:,} €".format(math.floor(df.Price.mean())).replace(",", " "), className="text-center"), width=2)
                     ]),
                 ], justify="start")
             ]),
@@ -290,7 +322,8 @@ def update_types_pie(data):
     df = pd.DataFrame(data)
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
-    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)])
+    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], 
+    layout={"margin": {"t": 0, "b": 0, "r": 0, "l": 0}})
     figure.update_traces(
         hoverinfo="value", 
         textinfo="label+percent", 
