@@ -8,8 +8,9 @@
     --sixth-color: #225ea8;
     --seventh-color: #0c2c84;
     --tori-title: #F94F55;
-    --basic-green: #58B505;
-    --light-green: #7FEA1F;
+    --strong-green: #58B505;
+    --medium-green: #57cf36;
+    --light-green: #D9FDB8;
 }
 
 /* Site-wide */
@@ -19,80 +20,6 @@ body {
     font-family: 'Fira Code', monospace;
     margin: 0;
     padding: 0;
-}
-
-html {
-    /*margin: 20px 200px 0px 200px;
-    /* margin: 0px 0px 0px 20px; */
-}
-
-.my-dash-app {
-    /*background-color: #E1EFD5*/
-}
-
-.header {
-    background-color: #58B505;
-    height: 10vh;
-    align-items: center;
-    display: flex;
-    
-
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background: #58B505;
-    text-align: center;
-    
-}
-
-.footer-icon-hy,
-.footer-icon-gh {
-    margin: 16px 12px 16px 8px
-}
-
-.footer-text {
-    position: relative;
-    text-align:start;
-    margin-bottom: 20px;
-}
-
-#price-slider,
-#year-slider,
-#size-slider {
-    margin-top: 10px;
-}
-
-.lottie-wrapper * {
-    margin: 0px 0px 0px 0px;
-}
-
-.header-lottie > * {
-    margin: 0px 0px 0px 0px;
-}
-
-[aria-label] * {
-    margin: 0px 0px 0px 0px;
-}
-
-#title-p1 {
-    font-family: "Palanquin";
-    color: #fff;
-    font-size: 64px;
-    /*text-align: start;*/
-    margin-right: 10px;
-
-}
-
-#title-p2 {
-    font-family: "Palanquin";
-    font-size: 62px;
-    color: #fff;
-    text-shadow: black 0px 0px 0px 2px
-
 }
 
 /* Fonts */
@@ -109,6 +36,98 @@ html {
 @font-face {
     font-family: "Palanquin";
     src: url("fonts/PalanquinDark-Regular.ttf");
+}
+
+/* Header & Footer */
+.header {
+    background-color: var(--strong-green);
+    height: 10vh;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    flex-direction: row;
+    justify-content: center;
+    left: -100px;
+}
+
+#header-title {
+    position: relative;
+    left: -80px;
+    font-family: "Palanquin";
+    font-size: 62px;
+    color: #fff;
+    text-shadow: black 0px 0px 0px 2px
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--strong-green);
+    text-align: center;
+    
+}
+
+.footer-icon-hy,
+.footer-icon-gh {
+    margin: 16px 12px 16px 8px
+}
+
+.footer-text {
+    position: relative;
+    text-align:start;
+    margin-bottom: 20px;
+}
+
+/* Sliders */
+#price-slider,
+#year-slider,
+#size-slider {
+    margin-top: 10px;
+}
+
+.rc-slider-track-1,
+.rc-slider-mark{
+    color: var(--strong-green);
+    background-color: var(--strong-green);
+}
+
+.rc-slider-handle-click-focused:focus {
+    border-color: var(--strong-green);
+    background-color: #fff;
+}
+
+.rc-slider-handle {
+    border: solid 2px var(--strong-green);
+    background-color: #fff;
+}
+.rc-slider-handle:hover,
+.rc-slider-handle-dragging {
+    border-color: var(--strong-green);
+}
+
+.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
+    border-color: var(--strong-green);
+    box-shadow: 0 0 0 5px var(--medium-green);
+}
+
+/* Lottie */
+.lottie-wrapper * {
+    margin: 0px 0px 0px 0px;
+}
+
+#lottie-wrapper {
+    width: 150px;
+    position: relative; left: -80px;
+}
+
+.header-lottie > *{
+    margin: 0px 0px 0px 0px;
+}
+
+[aria-label] {
+    margin: 0px 0px 0px 0px;
 }
 
 /* flexbox */
@@ -128,30 +147,20 @@ html {
     background-color: #ffffff;
 }
 
-/* range-slider */
-.rc-slider-track-1,
-.rc-slider-mark{
-    color: #58B505;
-    background-color: #58B505;
+/* Main-grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    grid-auto-rows: minmax(150px, auto);
+    grid-gap: 100px;
+    margin: 5% 20% 20% 5%;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 8vh;
 }
 
-.rc-slider-handle-click-focused:focus {
-    border-color: var(--basic-green);
-    background-color: #fff;
-}
-
-.rc-slider-handle {
-    border: solid 2px #58B505;
-    background-color: #fff;
-}
-.rc-slider-handle:hover,
-.rc-slider-handle-dragging {
-    border-color: #58B505;
-}
-
-.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color: #58B505;
-    box-shadow: 0 0 0 5px #7FEA1F;
+.grid-item {
+    border: black 2px solid;
 }
 /* ********* OLD **************** */
 /* Title

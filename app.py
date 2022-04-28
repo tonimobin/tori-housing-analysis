@@ -11,7 +11,7 @@ import math
 import dash_extensions as de
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
 app = Dash(__name__)
-
+app.title = "Housing analysis"
 # Load the data, drop records with empty fields, convert num data to int and sort by price
 df = pd.read_csv("full_data_cleaned_and_outliers_removed.csv", sep=",")
 df.dropna(subset=["Price", "Rooms", "Size", "Type", "Year"], inplace=True)
@@ -37,9 +37,9 @@ app.layout = html.Div(className="my-dash-app", children=[
 
     # Header
     html.Div(className="header", children=[
-         html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options, width="20%", height="20%", url=lottie_url, className="header-lottie"),]),
+         html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options, width="75%", height="75%", url=lottie_url, className="header-lottie"),]),
          #html.Span(id="title-p1", children="tori.fi"), 
-         html.Span(id="title-p2", children=" Housing Analysis"),
+         html.Span(id="header-title", children=" Housing Analysis"),
     ]),
 
     # Options
@@ -114,10 +114,36 @@ app.layout = html.Div(className="my-dash-app", children=[
             ),
         ]),
     ]),
-    html.Div(""),
-    html.Div("Labore magna amet ut et ea fugiat aliqua nulla mollit irure labore aliquip consectetur."),
-    html.Div("Incididunt nisi ipsum aute est nisi ut consequat voluptate. Voluptate reprehenderit aute sit consectetur ullamco et occaecat laboris laborum voluptate velit. Officia tempor exercitation Lorem labore enim duis irure ex. Laborum sint aute ea ex ullamco. Ad ullamco aliquip duis exercitation eu ullamco aliquip veniam consectetur."),
-    html.Div("Consequat sit reprehenderit fugiat pariatur aute eu ex occaecat ad labore id dolore. Duis laborum excepteur ea occaecat adipisicing qui qui in enim. Laboris anim eu reprehenderit deserunt nulla sint do tempor Lorem labore non. Tempor pariatur ullamco est ullamco dolor ea cupidatat minim nostrud dolor irure amet. Ut ex enim duis deserunt reprehenderit."),
+    html.Hr(),
+    html.Div(className="grid-container", children=[
+        html.Div(className="grid-item grid-item-1", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-2", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-3", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-4", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-5", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-6", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-7", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-8", children=[
+            html.P("Testi")
+        ]),
+        html.Div(className="grid-item grid-item-9", children=[
+            html.P("Testi")
+        ]),
+    ]),
     html.Footer(className="footer", children=[
         html.A(href="https://github.com/tonimobin/tori-housing-data-scrape-script", target="_blank", children=[
             html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("github-logo-small.png")),
@@ -257,33 +283,33 @@ app.layout = html.Div(className="my-dash-app", children=[
 # ], fluid=True, className="dbc")
 
 # Handle updates to data when user makes different queries
-# @app.callback(
-#     Output("memory-output", "data"),
-#     Input('housing-type-dropdown', 'value'),
-#     Input('location-dropdown', 'value'),
-#     Input('price-slider', 'value'),
-#     Input('year-slider', 'value'),
-#     Input('size-slider', 'value'),
-#     Input('rooms-checklist', 'value'))
-# def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_slider,
-#                 size_slider, rooms_checklist):
+@app.callback(
+    Output("memory-output", "data"),
+    Input('housing-type-dropdown', 'value'),
+    Input('location-dropdown', 'value'),
+    Input('price-slider', 'value'),
+    Input('year-slider', 'value'),
+    Input('size-slider', 'value'),
+    Input('rooms-checklist', 'value'))
+def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_slider,
+                size_slider, rooms_checklist):
 
-#     # Filter data by slider values
-#     dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
-#     dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
-#     dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
+    # Filter data by slider values
+    dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
+    dff = dff[dff['Price'].between(price_slider[0], price_slider[1], inclusive="both")]
+    dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
 
-#     # Filter data by checklist selections
-#     if rooms_checklist:
-#         dff = dff[dff["Rooms"].isin(rooms_checklist)]
+    # Filter data by checklist selections
+    if rooms_checklist:
+        dff = dff[dff["Rooms"].isin(rooms_checklist)]
 
-#     # Filter data by dropdown selections
-#     if housing_type_dropdown:
-#         dff = dff[dff["Type"].isin(housing_type_dropdown)]
-#     if location_dropdown:
-#         dff = dff[dff["Location"].isin(location_dropdown)]
+    # Filter data by dropdown selections
+    if housing_type_dropdown:
+        dff = dff[dff["Type"].isin(housing_type_dropdown)]
+    if location_dropdown:
+        dff = dff[dff["Location"].isin(location_dropdown)]
 
-#     return dff.to_dict("records")
+    return dff.to_dict("records")
 
 # # Update median price by size (horizontal bar chart)
 # @app.callback(Output("price-m2-median-by-loc", "figure"), Input("memory-output", "data"))
@@ -404,7 +430,7 @@ app.layout = html.Div(className="my-dash-app", children=[
 #         ]
 
 
-# # Update rooms pie chart (to:do prevent empty dataset error for this & type)
+# Update rooms pie chart (to:do prevent empty dataset error for this & type)
 # @app.callback(Output("rooms-pie", "figure"),
 #               Input("memory-output", "data"))
 # def update_rooms_pie(data):
