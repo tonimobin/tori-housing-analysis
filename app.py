@@ -135,10 +135,12 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-7", children=[
-            html.P("Testi")
+            html.Span("Distribution of rooms"),
+            dcc.Graph(id="rooms-pie")
         ]),
         html.Div(className="grid-item grid-item-8", children=[
-            html.P("Testi")
+            html.Span("Distribution of types"),
+            dcc.Graph(id="types-pie")
         ]),
         html.Div(className="grid-item grid-item-9", children=[
             html.P("Testi")
@@ -430,48 +432,51 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 #         ]
 
 
-# Update rooms pie chart (to:do prevent empty dataset error for this & type)
-# @app.callback(Output("rooms-pie", "figure"),
-#               Input("memory-output", "data"))
-# def update_rooms_pie(data):
-#     colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
-#     if data is None:
-#          raise PreventUpdate
-#     df = pd.DataFrame(data)
-#     rooms = df["Rooms"].unique()
-#     room_count = df["Rooms"].value_counts(sort=False).array
-#     figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)])
-#     figure.update_traces(
-#         hoverinfo="value", 
-#         textinfo="label+percent", 
-#         marker=dict(colors = colors), 
-#         hole=0.5, 
-#         textposition="outside",
-#     )
-#     figure.update(layout_showlegend=False)
-#     return figure
+#Update rooms pie chart (to:do prevent empty dataset error for this & type)
+@app.callback(Output("rooms-pie", "figure"),
+              Input("memory-output", "data"))
+def update_rooms_pie(data):
+    color_map={"1H":"#0B2027","2H":"#40798C","3H":"#70A9A1","4H":"#CFD7C7","5H":"#F6F1D1","6H":"E9E0A6"},
+    colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
+    if data is None:
+         raise PreventUpdate
+    df = pd.DataFrame(data)
+    rooms = df["Rooms"].unique()
+    room_count = df["Rooms"].value_counts(sort=False).array
+    figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)], layout=go.Layout(margin={"t" : 0, "b" : 0}, height=200))
+    figure.update_traces(
+        hoverinfo="value", 
+        textinfo="label+percent",
+        marker=dict(colors = colors), 
+        hole=0.5, 
+        textposition="outside",
+        
+    )
+    figure.update(layout_showlegend=False)
+    return figure
+    
 
 # # Update types pie chart
-# @app.callback(Output("types-pie", "figure"),
-#               Input("memory-output", "data"))
-# def update_types_pie(data):
-#     colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
-#     if data is None:
-#          raise PreventUpdate
-#     df = pd.DataFrame(data)
-#     types = df["Type"].unique()
-#     type_count = df["Type"].value_counts(sort=False).array
-#     figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], 
-#     layout={"margin": {"t": 0, "b": 0, "r": 0, "l": 0}})
-#     figure.update_traces(
-#         hoverinfo="value", 
-#         textinfo="label+percent", 
-#         marker=dict(colors = colors), 
-#         hole=0.5, 
-#         textposition="outside",
-#     )
-#     figure.update(layout_showlegend=False)
-#     return figure
+@app.callback(Output("types-pie", "figure"),
+              Input("memory-output", "data"))
+def update_types_pie(data):
+    colors = ["#0B2027", "#40798C", "#70A9A1", "#CFD7C7", "#F6F1D1", "E9E0A6"]
+    if data is None:
+         raise PreventUpdate
+    df = pd.DataFrame(data)
+    types = df["Type"].unique()
+    type_count = df["Type"].value_counts(sort=False).array
+    figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], 
+    layout=go.Layout(margin={"t" : 0, "b" : 0}, height=200))
+    figure.update_traces(
+        hoverinfo="value", 
+        textinfo="label+percent", 
+        marker=dict(colors = colors), 
+        hole=0.5, 
+        textposition="outside",
+    )
+    figure.update(layout_showlegend=False)
+    return figure
 if __name__ == "__main__":
     app.run_server(debug=True)
 

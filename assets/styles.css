@@ -151,16 +151,22 @@ body {
 .grid-container {
     display: grid;
     grid-template-columns: 300px 300px 300px;
-    grid-auto-rows: minmax(150px, auto);
-    grid-gap: 100px;
-    margin: 5% 20% 20% 5%;
+    grid-auto-rows: minmax(200px, auto);
+    column-gap: 200px;
+    row-gap: 100px;
+    /* margin: 2% 5% 2% 5%; */
     justify-content: center;
     margin: 0 auto;
-    margin-top: 8vh;
+    margin-top: 4vh;
 }
 
 .grid-item {
-    border: black 2px solid;
+    /* border: black 2px solid; */
+}
+
+.grid-item-7 {
+    max-height: 450px;
+    justify-items: center;
 }
 /* ********* OLD **************** */
 /* Title
