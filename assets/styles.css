@@ -22,6 +22,26 @@ body {
     padding: 0;
 }
 
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    margin: 0 auto;
+}
+
+.row {
+    display: table-row;
+}
+
+div.row {
+    height: 100%;
+}
 /* Fonts */
 @font-face {
     font-family: "Fira Code";
@@ -61,11 +81,13 @@ body {
 
 .footer {
     position: fixed;
+    left: 0;
     bottom: 0;
     width: 100%;
     height: 60px;
     background: var(--strong-green);
     text-align: center;
+    border-top: 6vh;
     
 }
 
@@ -158,6 +180,7 @@ body {
     justify-content: center;
     margin: 0 auto;
     margin-top: 4vh;
+    margin-bottom: 6vh;
 }
 
 .grid-item {
@@ -167,6 +190,88 @@ body {
 .grid-item-7 {
     max-height: 450px;
     justify-items: center;
+}
+
+.infobox {
+    width: 10%;
+    font-size: xx-small;
+    margin-left: 2vw;
+    margin-top: 2vh;
+    background-color: white;
+    border: #58B505 2px solid;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.my-dash-app {
+    overflow: auto;
+}
+
+.flexbox-item-1 {
+    width: 32px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+}
+
+/* info icon */
+.info-text {
+    margin-top: 32px;
+    opacity: 0.90;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    border: solid 1px black;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, .3);
+    -webkit-background-clip: padding-box;
+    /* for Safari */
+    background-clip: padding-box;
+    /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+
+.info-text:hover {
+    -webkit-box-shadow: 0px 0px 8px 5px var(--strong-green);
+    -moz-box-shadow: 0px 0px 8px 2px light green;
+    box-shadow: 0px 0px 8px 2px light blue;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    z-index: 9999999;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: var(--strong-green);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    margin: 10px;
+}
+
+.info-text-i {
+    opacity: 0.3;
 }
 /* ********* OLD **************** */
 /* Title

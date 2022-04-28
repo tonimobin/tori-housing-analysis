@@ -36,15 +36,24 @@ app.layout = html.Div(className="my-dash-app", children=[
     dcc.Store(id="memory-output"),
 
     # Header
-    html.Div(className="header", children=[
+    html.Div(className="header row", children=[
          html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options, width="75%", height="75%", url=lottie_url, className="header-lottie"),]),
          #html.Span(id="title-p1", children="tori.fi"), 
          html.Span(id="header-title", children=" Housing Analysis"),
     ]),
 
     # Options
-    html.Div(className="flexbox-container", children=[
+    html.Div(className="flexbox-container row", children=[
         html.Div(className="flexbox-item flexbox-item-1", children=[
+            html.Div(className="inner", children=[
+                html.Div(className="info-text tooltip", children=[html.Span(className="info-text-i", children="i"), html.Span(className="tooltiptext", children="""
+    This application contains data from over 5000 housing listings from a Finnish peer-to-peer marketplace, Tori.fi. 
+    You can query the data with various options and the resulting data will be visualized below!
+    """)], **{"data-text": "just a test"})
+            ])
+            #html.Img(src=app.get_asset_url("info.png"), width=32, height=32, className="info-image button"),
+        ]),
+        html.Div(className="flexbox-item flexbox-item-2", children=[
         html.Label(children="Type:"),
             dcc.Dropdown(
                 id="housing-type-dropdown",
@@ -53,7 +62,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 multi=True,
             ),
         ]),
-        html.Div(className="flexbox-item flexbox-item-2", children=[
+        html.Div(className="flexbox-item flexbox-item-3", children=[
             html.Label("Location:"),
             dcc.Dropdown(
                 id="location-dropdown",
@@ -62,7 +71,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 multi=True
             ),
         ]),
-        html.Div(className="flexbox-item flexbox-item-3", children=[
+        html.Div(className="flexbox-item flexbox-item-4", children=[
             html.Label(id="price-label", children="Price:"),
             dcc.RangeSlider(
                 id="price-slider",
@@ -75,7 +84,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 #tooltip={"placement": "bottom", "always_visible": True},
             ),
         ]),
-        html.Div(className="flexbox-item flexbox-item-4", children=[
+        html.Div(className="flexbox-item flexbox-item-5", children=[
             html.Label(id="year-label", children="Year:"),
             dcc.RangeSlider(
                 id="year-slider",
@@ -88,7 +97,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 tooltip={"placement": "bottom", "always_visible": False}
             ),
         ]),
-        html.Div(className="flexbox-item flexbox-item-5", children=[
+        html.Div(className="flexbox-item flexbox-item-6", children=[
         html.Label(id="size-label", children="Size:"),
             dcc.RangeSlider(
                 id="size-slider",
@@ -101,7 +110,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 tooltip={"placement": "bottom", "always_visible": False}
             ),
         ]),
-        html.Div(className="flexbox-item flexbox-item-6", children=[
+        html.Div(className="flexbox-item flexbox-item-7", children=[
             html.Label("Rooms"),
             dcc.Checklist(
                 id="rooms-checklist",
@@ -114,7 +123,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             ),
         ]),
     ]),
-    html.Hr(),
+    html.Hr(className=""),
     html.Div(className="grid-container", children=[
         html.Div(className="grid-item grid-item-1", children=[
             html.P("Testi")
@@ -126,7 +135,8 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-4", children=[
-            html.P("Testi")
+            html.Span("Distribution of types"),
+            dcc.Graph(id="types-pie")
         ]),
         html.Div(className="grid-item grid-item-5", children=[
             html.P("Testi")
@@ -139,14 +149,13 @@ app.layout = html.Div(className="my-dash-app", children=[
             dcc.Graph(id="rooms-pie")
         ]),
         html.Div(className="grid-item grid-item-8", children=[
-            html.Span("Distribution of types"),
-            dcc.Graph(id="types-pie")
+            html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-9", children=[
             html.P("Testi")
         ]),
     ]),
-    html.Footer(className="footer", children=[
+    html.Footer(className="footer row", children=[
         html.A(href="https://github.com/tonimobin/tori-housing-data-scrape-script", target="_blank", children=[
             html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("github-logo-small.png")),
         ]),
