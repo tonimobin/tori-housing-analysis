@@ -37,21 +37,21 @@ app.layout = html.Div(className="my-dash-app", children=[
 
     # Header
     html.Div(className="header row", children=[
-         html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options, width="75%", height="75%", url=lottie_url, className="header-lottie"),]),
-         #html.Span(id="title-p1", children="tori.fi"), 
-         html.Span(id="header-title", children=" Housing Analysis"),
+        html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options,
+                 width="75%", height="75%", url=lottie_url, className="header-lottie"), ]),
+        #html.Span(id="title-p1", children="tori.fi"),
+        html.Span(id="header-title", children=" Housing Analysis"),
     ]),
 
     # Options
     html.Div(className="flexbox-container row", children=[
+        # Hoverable info panel
         html.Div(className="flexbox-item flexbox-item-1", children=[
             html.Div(className="inner", children=[
-                html.Div(className="info-text tooltip", children=[html.Span(className="info-text-i", children="i"), html.Span(className="tooltiptext", children="""
-    This application contains data from over 5000 housing listings from a Finnish peer-to-peer marketplace, Tori.fi. 
-    You can query the data with various options and the resulting data will be visualized below!
-    """)], **{"data-text": "just a test"})
+                html.Div(className="info-text tooltip", children=[
+                    html.Span(className="info-text-i", children="i"),
+                    html.Span(className="tooltiptext", children="""This application contains data from over 5000 housing listings from a Finnish peer-to-peer marketplace, Tori.fi. You can query the data with various options and the resulting data will be visualized below!""")])
             ])
-            #html.Img(src=app.get_asset_url("info.png"), width=32, height=32, className="info-image button"),
         ]),
         html.Div(className="flexbox-item flexbox-item-2", children=[
         html.Label(children="Type:"),
@@ -126,17 +126,17 @@ app.layout = html.Div(className="my-dash-app", children=[
     html.Hr(className=""),
     html.Div(className="grid-container", children=[
         html.Div(className="grid-item grid-item-1", children=[
-            html.P("Testi")
+            html.Div(id="key-figures", className="keyfig-container")
         ]),
-        html.Div(className="grid-item grid-item-2", children=[
-            html.P("Testi")
-        ]),
+        # html.Div(className="grid-item grid-item-2", children=[
+        #     html.P("Testi")
+        # ]),
         html.Div(className="grid-item grid-item-3", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-4", children=[
-            html.Span("Distribution of types"),
-            dcc.Graph(id="types-pie")
+            html.Span("Median €/m² by region"),
+            dcc.Graph(id="price-m2-median-by-loc")
         ]),
         html.Div(className="grid-item grid-item-5", children=[
             html.P("Testi")
@@ -145,14 +145,15 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-7", children=[
-            html.Span("Distribution of rooms"),
-            dcc.Graph(id="rooms-pie")
+
         ]),
         html.Div(className="grid-item grid-item-8", children=[
-            html.P("Testi")
+            html.Span("Distribution of types"),
+            dcc.Graph(id="types-pie")
         ]),
         html.Div(className="grid-item grid-item-9", children=[
-            html.P("Testi")
+            html.Span("Distribution of rooms"),
+            dcc.Graph(id="rooms-pie")
         ]),
     ]),
     html.Footer(className="footer row", children=[
@@ -323,23 +324,23 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
     return dff.to_dict("records")
 
 # # Update median price by size (horizontal bar chart)
-# @app.callback(Output("price-m2-median-by-loc", "figure"), Input("memory-output", "data"))
-# def update_price_horizontal(data):
-#     if data is None:
-#         raise PreventUpdate
-#     df = pd.DataFrame(data)
-#     # dff = df["Location"].value_counts().reset_index()
-#     # dff.columns = ["Location", "Counts"]
-#     location_grp = df.groupby("Location")
-#     dff = location_grp["Price_M2"].median().round(0)
-#     dff = dff.reset_index()
-#     dff.columns = ["Location", "€/m²"]
-#     dff = dff.sort_values("€/m²", ascending=False)
-#     figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
-#     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
-#     title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
-#     figure.update_traces(marker_color="#3B6E80", textposition="outside", cliponaxis=False)
-#     return figure
+@app.callback(Output("price-m2-median-by-loc", "figure"), Input("memory-output", "data"))
+def update_price_horizontal(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    # dff = df["Location"].value_counts().reset_index()
+    # dff.columns = ["Location", "Counts"]
+    location_grp = df.groupby("Location")
+    dff = location_grp["Price_M2"].median().round(0)
+    dff = dff.reset_index()
+    dff.columns = ["Location", "€/m²"]
+    dff = dff.sort_values("€/m²", ascending=False)
+    figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}), 
+    # title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+    figure.update_traces(marker_color="#3B6E80", textposition="outside", cliponaxis=False)
+    return figure
 
 # # Update count of listings by location (horizontal bar chart)
 # @app.callback(Output("avg-prices-by-size", "figure"), Input("memory-output", "data"))
@@ -349,9 +350,9 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 #     df = pd.DataFrame(data)
 #     dff = df["Location"].value_counts().reset_index()
 #     dff.columns = ["Location", "Counts"]
-#     figure = px.bar(dff, x="Counts", y="Location", orientation="h", title="Count of listings by location", labels={"Location": "", "Counts": ""})
-#     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}, 
-#     title= {"text": "Count of listings by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
+#     figure = px.bar(dff, x="Counts", y="Location", orientation="h", labels={"Location": "", "Counts": ""})
+#     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}), 
+#     title= {"text": "", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
 #     figure.update_traces(marker_color="#679F96")
 #     return figure
 
@@ -395,6 +396,38 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
 #         }
 #         return figure
 #     return figure
+
+# Create & update keyfigures
+@app.callback(Output("key-figures", "children"), Input("memory-output", "data"))
+def update_keyfig(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    if len(df) > 0:
+        return [
+            html.Div(className="keyfig-row keyfig-row-1", children=[
+                    html.Div(className="labels-item", children="Amount of listings"),
+                    html.Div(className="labels-item", children="Mean €/m2"),
+                    html.Div(className="labels-item", children="Median year of construction"),
+                    html.Div(className="values-item", children=f"{len(df)}"),
+                    html.Div(className="values-item", children="{:,} €".format(math.floor(df.Price.sum() / df.Size.sum())).replace(",", " ")),
+                    html.Div(className="values-item", children=f"{math.floor(df.Year.median())}")
+            ]),
+            html.Div(className="keyfig-row keyfig-row-2", children=[
+                    html.Div(className="labels-item", children="Cheapest listing"),
+                    html.Div(className="labels-item", children="Most expensive"),
+                    html.Div(className="labels-item", children="Mean price"),
+                    html.Div(className="values-item", children="{:,} €".format(df.Price.min()).replace(",", " ")),
+                    html.Div(className="values-item", children="{:,} €".format(df.Price.max()).replace(",", " ")),
+                    html.Div(className="values-item", children="{:,} €".format(math.floor(df.Price.mean())).replace(",", " ")),
+            ])
+        ]
+    else:
+        return [
+            html.Div(
+                html.P("No listings with given options.")
+            )
+        ]
 
 # # Update key figures
 # @app.callback(Output("key-figures", "children"),

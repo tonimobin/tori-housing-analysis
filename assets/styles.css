@@ -11,6 +11,7 @@
     --strong-green: #58B505;
     --medium-green: #57cf36;
     --light-green: #D9FDB8;
+    --background-cream: rgba(240, 233, 204, 0.996);
 }
 
 /* Site-wide */
@@ -172,26 +173,109 @@ div.row {
 /* Main-grid */
 .grid-container {
     display: grid;
-    grid-template-columns: 300px 300px 300px;
-    grid-auto-rows: minmax(200px, auto);
-    column-gap: 200px;
-    row-gap: 100px;
+    grid-template-columns: 450px 450px 450px;
+    grid-auto-rows: minmax(300px, auto);
+    column-gap: 25px;
+    row-gap: 25px;
     /* margin: 2% 5% 2% 5%; */
     justify-content: center;
     margin: 0 auto;
     margin-top: 4vh;
     margin-bottom: 6vh;
+    grid-template-areas:
+    "keyfig keyfig chart-3"
+    "chart-1 map map"
+    "chart-2 pie-1 pie-2";
 }
 
 .grid-item {
     /* border: black 2px solid; */
+    background-color: var(--light-green);
+    border-radius: 25px;
+    padding: 20px;
+}
+
+/* grid layout */
+.grid-item-1 {
+    grid-column: span 2;
+    align-self: center;
+    justify-self: center;
+}
+
+.grid-item-3 {
+    grid-area: chart-3
+}
+
+.grid-item-4 {
+    grid-area: chart-1
 }
 
 .grid-item-7 {
-    max-height: 450px;
-    justify-items: center;
+    grid-area: chart-2;
 }
 
+.grid-item-5,
+.grid-item-6 {
+    grid-area: map
+}
+
+.grid-item-8 {
+    grid-area: pie-1
+}
+
+.grid-item-9 {
+    grid-area: pie-2
+}
+/* .grid-item-7 {
+    max-height: 450px;
+    justify-items: center;
+} */
+
+/* keyfig layout */
+
+.keyfig-container {
+    display: grid;
+    grid-template-columns: 900px;
+    grid-auto-rows: minmax(50px, auto);
+    gap: 2px;
+    justify-content: start;
+    padding: 2px;
+    /* border: 2px solid blue; */
+    justify-self: center;
+}
+
+.keyfig-row {
+    display: grid;
+    grid-template-columns: 250px 200px 350px;
+    grid-auto-rows: minmax(40px, auto);
+    /* border: 1px solid black; */
+    justify-content: start;
+    align-content: center;
+    padding: 2px;
+}
+
+.keyfig-row-2 {
+    align-self: flex-end;
+}
+
+.labels-item,
+.values-item {
+    /* border: 1px solid red; */
+    text-align: center;
+    align-items: center;
+    justify-content: start;
+}
+
+.labels-item {
+    font-family: 'Fira Code Bold';
+    font-size: medium;
+    align-self: flex-end;
+}
+
+.values-item {
+    margin-top: 2vh;
+    font-size: small;
+}
 .infobox {
     width: 10%;
     font-size: xx-small;
@@ -226,13 +310,11 @@ div.row {
     text-align: center;
     border: 1px solid rgba(0, 0, 0, .3);
     -webkit-background-clip: padding-box;
-    /* for Safari */
     background-clip: padding-box;
-    /* for IE9+, Firefox 4+, Opera, Chrome */
 }
 
 .info-text:hover {
-    -webkit-box-shadow: 0px 0px 8px 5px var(--strong-green);
+    -webkit-box-shadow: 0px 0px 3px 2px var(--strong-green);
     -moz-box-shadow: 0px 0px 8px 2px light green;
     box-shadow: 0px 0px 8px 2px light blue;
 }
@@ -272,6 +354,11 @@ div.row {
 
 .info-text-i {
     opacity: 0.3;
+}
+
+.bartext::after,
+.bartext-outside::after {
+    content: " €";
 }
 /* ********* OLD **************** */
 /* Title
