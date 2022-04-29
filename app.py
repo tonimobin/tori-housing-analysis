@@ -132,7 +132,7 @@ app.layout = html.Div(className="my-dash-app", children=[
         #     html.P("Testi")
         # ]),
         html.Div(className="grid-item grid-item-3", children=[
-            html.P("Testi")
+            html.Div(id="listings-count", className="listcount")
         ]),
         html.Div(className="grid-item grid-item-4", children=[
             html.Span("Median €/m² by region"),
@@ -429,6 +429,25 @@ def update_keyfig(data):
             )
         ]
 
+# Update listings counts
+@app.callback(Output("listings-count", "children"), Input("memory-output", "data"))
+def update_listings_count(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    if len(df) < 0:
+        return [
+            html.Div("ainaki 432424")
+        ]
+    else:
+        return [
+            html.Div(className="listcount-title", children=[
+                html.Div("Amount of listings")
+            ]),
+            html.Div(className="listcount-num", children=[
+                html.Div(f"{len(df)}")
+            ])
+        ]
 # # Update key figures
 # @app.callback(Output("key-figures", "children"),
 #               Input("memory-output", "data"))

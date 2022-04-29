@@ -190,7 +190,7 @@ div.row {
 
 .grid-item {
     /* border: black 2px solid; */
-    background-color: var(--light-green);
+    /* background-color: rgb(118, 212, 81); */
     border-radius: 25px;
     padding: 20px;
 }
@@ -203,7 +203,10 @@ div.row {
 }
 
 .grid-item-3 {
-    grid-area: chart-3
+    grid-area: chart-3;
+    align-self: center;
+    background: linear-gradient(90deg, #a6ee90 0%, #8aeb6f 43%, #7beb6f 100%);
+    font-weight: bolder;
 }
 
 .grid-item-4 {
@@ -216,7 +219,7 @@ div.row {
 
 .grid-item-5,
 .grid-item-6 {
-    grid-area: map
+    grid-area: map;
 }
 
 .grid-item-8 {
@@ -247,7 +250,7 @@ div.row {
 .keyfig-row {
     display: grid;
     grid-template-columns: 250px 200px 350px;
-    grid-auto-rows: minmax(40px, auto);
+    grid-auto-rows: minmax(60px, auto);
     /* border: 1px solid black; */
     justify-content: start;
     align-content: center;
@@ -275,16 +278,6 @@ div.row {
 .values-item {
     margin-top: 2vh;
     font-size: small;
-}
-.infobox {
-    width: 10%;
-    font-size: xx-small;
-    margin-left: 2vw;
-    margin-top: 2vh;
-    background-color: white;
-    border: #58B505 2px solid;
-    border-radius: 5px;
-    padding: 3px;
 }
 
 .my-dash-app {
@@ -356,9 +349,30 @@ div.row {
     opacity: 0.3;
 }
 
-.bartext::after,
-.bartext-outside::after {
-    content: " €";
+/* listings count */
+.listcount {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.listcount-title {
+    height: 125px;
+    align-self: center;
+    font-size: 48px;
+    text-align: center;
+    text-justify: center;
+    color: #fff;
+}
+
+.listcount-num {
+    height: 125px;
+    align-self: center;
+    font-size: 48px;
+    text-align: center;
+    text-justify: center;
+    color: #fff;
+    margin-top: 2vh;
 }
 /* ********* OLD **************** */
 /* Title
