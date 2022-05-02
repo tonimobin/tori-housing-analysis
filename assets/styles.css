@@ -377,6 +377,13 @@ div.row {
     margin-top: 1vh;
 }
 
+/* pies */
+#types-pie,
+#rooms-pie {
+    align-self: center;
+    position: relative;
+    top: 100px;
+}
 /* ********* OLD **************** */
 /* Title
 #title-p1 {

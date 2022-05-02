@@ -160,7 +160,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-7", children=[
-
+            dcc.Graph(id="price-distrib")
         ]),
         html.Div(className="grid-item grid-item-8", children=[
             html.Span("Distribution of types"),
@@ -354,9 +354,22 @@ def update_price_horizontal(data):
     figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}), 
     # title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
-    figure.update_traces(marker_color="#3B6E80", textposition="outside", cliponaxis=False)
+    figure.update_traces(marker_color="#58B505", textposition="outside", cliponaxis=False)
     return figure
 
+# Update box plot
+@app.callback(Output("price-distrib", "figure"), Input("memory-output", "data"))
+def update_box_plot(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    # figure = go.Figure(data=[go.Box(y = df["Price"], boxpoints="all")])
+    # figure = px.strip(df["Price"], y="Price")
+    prices = df["Price"]
+    figure = go.Figure()
+    figure.add_trace(go.Box(y = prices, marker_color="#58B505", boxpoints=False))
+    figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
+    return figure
 # # Update count of listings by location (horizontal bar chart)
 # @app.callback(Output("avg-prices-by-size", "figure"), Input("memory-output", "data"))
 # def update_count_horizontal(data):
@@ -533,7 +546,7 @@ def update_rooms_pie(data):
     df = pd.DataFrame(data)
     rooms = df["Rooms"].unique()
     room_count = df["Rooms"].value_counts(sort=False).array
-    figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)], layout=go.Layout(margin={"t" : 0, "b" : 0}, height=200))
+    figure = go.Figure(data=[go.Pie(labels=rooms, values=room_count)], layout=go.Layout(margin={"t" : 0, "b" : 0}, height=250))
     figure.update_traces(
         hoverinfo="value", 
         textinfo="label+percent",
@@ -557,7 +570,7 @@ def update_types_pie(data):
     types = df["Type"].unique()
     type_count = df["Type"].value_counts(sort=False).array
     figure = go.Figure(data=[go.Pie(labels=types, values=type_count)], 
-    layout=go.Layout(margin={"t" : 0, "b" : 0}, height=200))
+    layout=go.Layout(margin={"t" : 0, "b" : 0}, height=250))
     figure.update_traces(
         hoverinfo="value", 
         textinfo="label+percent", 
