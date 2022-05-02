@@ -119,15 +119,21 @@ app.layout = html.Div(className="my-dash-app", children=[
         ]),
         html.Div(className="flexbox-item flexbox-item-7", children=[
             html.Label("Rooms"),
-            dcc.Checklist(
-                id="rooms-checklist",
-                #className="dbc",
-                options=[{"label": "" + x, "value": x} for x in rooms],
-                #inline=False,
-                #labelStyle={"display": "block"},
-                #style={"overflow": "auto"},
-                #labelClassName="mr-1"
-            ),
+            # dcc.Checklist(
+            #     id="rooms-checklist",
+            #     #className="dbc",
+            #     options=[{"label": "" + x, "value": x} for x in rooms],
+            #     #inline=False,
+            #     #labelStyle={"display": "block"},
+            #     #style={"overflow": "auto"},
+            #     #labelClassName="mr-1"
+            # ),
+            dcc.Dropdown(
+                id="rooms-dropdown",
+                options=[{"label": x, "value": x} for x in rooms],
+                placeholder="Room count",
+                multi=True
+            )
         ]),
     ]),
     html.Hr(className=""),
@@ -311,9 +317,9 @@ app.layout = html.Div(className="my-dash-app", children=[
     Input('price-slider', 'value'),
     Input('year-slider', 'value'),
     Input('size-slider', 'value'),
-    Input('rooms-checklist', 'value'))
+    Input('rooms-dropdown', 'value'))
 def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_slider,
-                size_slider, rooms_checklist):
+                size_slider, rooms_dropdown):
 
     # Filter data by slider values
     dff = df[df['Year'].between(year_slider[0], year_slider[1], inclusive="both")]
@@ -321,8 +327,8 @@ def filter_data(housing_type_dropdown, location_dropdown, price_slider, year_sli
     dff = dff[dff['Size'].between(size_slider[0], size_slider[1], inclusive="both")]
 
     # Filter data by checklist selections
-    if rooms_checklist:
-        dff = dff[dff["Rooms"].isin(rooms_checklist)]
+    if rooms_dropdown:
+        dff = dff[dff["Rooms"].isin(rooms_dropdown)]
 
     # Filter data by dropdown selections
     if housing_type_dropdown:
@@ -468,7 +474,7 @@ def update_map(data):
     loc_counts = df["Location"].value_counts().reset_index()
     loc_counts.columns = ["Location", "Count"]
     locations = ["Helsinki", "Lappi"]
-    figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Viridis", range_color=(0,12), scope="europe")
+    figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Greens", range_color=(0,12), scope="europe")
     figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return figure
 # # Update key figures
