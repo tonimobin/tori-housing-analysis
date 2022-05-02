@@ -9,6 +9,9 @@ import numpy as np
 import plotly.graph_objs as go
 import math
 import dash_extensions as de
+from urllib.request import urlopen
+import json
+
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
 app = Dash(__name__)
 app.title = "Housing analysis"
@@ -25,6 +28,10 @@ df["Price_M2"] = df.apply(lambda row: row.Price / row.Size, axis=1)
 housing_types = np.sort(df["Type"].unique())
 locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
+
+# Map
+with urlopen("https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json") as response:
+    finland = json.load(response)
 
 # Lottie
 #lottie_url = "https://assets9.lottiefiles.com/private_files/lf30_p5tali1o.json"
@@ -81,7 +88,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 value=[df.Price.min(), df.Price.max()],
                 step=5000,
                 marks=None,
-                #tooltip={"placement": "bottom", "always_visible": True},
+                tooltip={"placement": "bottom", "always_visible": True},
             ),
         ]),
         html.Div(className="flexbox-item flexbox-item-5", children=[
@@ -94,7 +101,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 value=[df.Year.min(), df.Year.max()],
                 step=1,
                 marks=None,
-                tooltip={"placement": "bottom", "always_visible": False}
+                tooltip={"placement": "bottom", "always_visible": True}
             ),
         ]),
         html.Div(className="flexbox-item flexbox-item-6", children=[
@@ -107,7 +114,7 @@ app.layout = html.Div(className="my-dash-app", children=[
                 value=[df.Size.min(), df.Size.max()],
                 step=1,
                 marks=None,
-                tooltip={"placement": "bottom", "always_visible": False}
+                tooltip={"placement": "bottom", "always_visible": True}
             ),
         ]),
         html.Div(className="flexbox-item flexbox-item-7", children=[
@@ -135,11 +142,13 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.Div(id="listings-count", className="listcount")
         ]),
         html.Div(className="grid-item grid-item-4", children=[
-            html.Span("Median €/m² by region"),
+            html.Span(className="median-em", children="Median €/m² by region"),
             dcc.Graph(id="price-m2-median-by-loc")
         ]),
         html.Div(className="grid-item grid-item-5", children=[
-            html.P("Testi")
+            html.Div(className="map-container", children=[
+                dcc.Graph(id="count-map")
+            ])
         ]),
         html.Div(className="grid-item grid-item-6", children=[
             html.P("Testi")
@@ -406,10 +415,10 @@ def update_keyfig(data):
     if len(df) > 0:
         return [
             html.Div(className="keyfig-row keyfig-row-1", children=[
-                    html.Div(className="labels-item", children="Amount of listings"),
-                    html.Div(className="labels-item", children="Mean €/m2"),
+                    html.Div(className="labels-item", children="Mean size"),
+                    html.Div(className="labels-item", children="Mean €/m²"),
                     html.Div(className="labels-item", children="Median year of construction"),
-                    html.Div(className="values-item", children=f"{len(df)}"),
+                    html.Div(className="values-item", children=f"{math.floor(df.Size.mean())} m²"),
                     html.Div(className="values-item", children="{:,} €".format(math.floor(df.Price.sum() / df.Size.sum())).replace(",", " ")),
                     html.Div(className="values-item", children=f"{math.floor(df.Year.median())}")
             ]),
@@ -441,13 +450,27 @@ def update_listings_count(data):
         ]
     else:
         return [
-            html.Div(className="listcount-title", children=[
-                html.Div("Amount of listings")
-            ]),
+            html.Div(className="listcount-title", children=
+"Amount of listings"
+            ),
             html.Div(className="listcount-num", children=[
                 html.Div(f"{len(df)}")
             ])
         ]
+
+# Map callback
+@app.callback(Output("count-map", "figure"), Input("memory-output", "data"))
+def update_map(data):
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
+    # create a new df with location and count of listings in the location
+    loc_counts = df["Location"].value_counts().reset_index()
+    loc_counts.columns = ["Location", "Count"]
+    locations = ["Helsinki", "Lappi"]
+    figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Viridis", range_color=(0,12), scope="europe")
+    figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    return figure
 # # Update key figures
 # @app.callback(Output("key-figures", "children"),
 #               Input("memory-output", "data"))

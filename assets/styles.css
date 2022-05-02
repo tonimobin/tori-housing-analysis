@@ -183,7 +183,7 @@ div.row {
     margin-top: 4vh;
     margin-bottom: 6vh;
     grid-template-areas:
-    "keyfig keyfig chart-3"
+    "chart-3 keyfig keyfig"
     "chart-1 map map"
     "chart-2 pie-1 pie-2";
 }
@@ -193,6 +193,7 @@ div.row {
     /* background-color: rgb(118, 212, 81); */
     border-radius: 25px;
     padding: 20px;
+    /* border: 2px solid var(--strong-green); */
 }
 
 /* grid layout */
@@ -205,8 +206,9 @@ div.row {
 .grid-item-3 {
     grid-area: chart-3;
     align-self: center;
-    background: linear-gradient(90deg, #a6ee90 0%, #8aeb6f 43%, #7beb6f 100%);
+    /* background: linear-gradient(90deg, #65b34e 0%, #5daf47 43%, #58B505 100%); */
     font-weight: bolder;
+    font-family: 'Palanquin';
 }
 
 .grid-item-4 {
@@ -270,7 +272,7 @@ div.row {
 }
 
 .labels-item {
-    font-family: 'Fira Code Bold';
+    font-family: 'Palanquin';
     font-size: medium;
     align-self: flex-end;
 }
@@ -320,10 +322,10 @@ div.row {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 240px;
+    width: 320px;
     background-color: var(--strong-green);
     color: #fff;
-    text-align: center;
+    text-align: start;
     padding: 10px;
     border-radius: 6px;
     position: absolute;
@@ -357,23 +359,23 @@ div.row {
 }
 
 .listcount-title {
-    height: 125px;
+    height: 115px;
     align-self: center;
     font-size: 48px;
     text-align: center;
     text-justify: center;
-    color: #fff;
+    font-family: 'Palanquin';
 }
 
 .listcount-num {
-    height: 125px;
+    height: 115px;
     align-self: center;
     font-size: 48px;
     text-align: center;
     text-justify: center;
-    color: #fff;
-    margin-top: 2vh;
+    margin-top: 1vh;
 }
+
 /* ********* OLD **************** */
 /* Title
 #title-p1 {
