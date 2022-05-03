@@ -7,6 +7,11 @@
     --fifth-color: #1d91c0;
     --sixth-color: #225ea8;
     --seventh-color: #0c2c84;
+    --tori-title: #F94F55;
+    --strong-green: #58B505;
+    --medium-green: #57cf36;
+    --light-green: #D9FDB8;
+    --background-cream: rgba(240, 233, 204, 0.996);
 }
 
 /* Site-wide */
@@ -19,10 +24,25 @@ body {
 }
 
 html {
-    /*margin: 20px 200px 0px 200px;
-    /* margin: 0px 0px 0px 20px; */
+    height: 100%;
+    width: 100%;
 }
 
+body {
+    height: 100%;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    margin: 0 auto;
+}
+
+.row {
+    display: table-row;
+}
+
+div.row {
+    height: 100%;
+}
 /* Fonts */
 @font-face {
     font-family: "Fira Code";
@@ -39,7 +59,333 @@ html {
     src: url("fonts/PalanquinDark-Regular.ttf");
 }
 
-/* Title */
+/* Header & Footer */
+.header {
+    background-color: var(--strong-green);
+    height: 10vh;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    flex-direction: row;
+    justify-content: center;
+    left: -100px;
+}
+
+#header-title {
+    position: relative;
+    left: -80px;
+    font-family: "Palanquin";
+    font-size: 62px;
+    color: #fff;
+    text-shadow: black 0px 0px 0px 2px
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--strong-green);
+    text-align: center;
+    border-top: 6vh;
+    
+}
+
+.footer-icon-hy,
+.footer-icon-gh {
+    margin: 16px 12px 16px 8px
+}
+
+.footer-text {
+    position: relative;
+    text-align:start;
+    margin-bottom: 20px;
+}
+
+/* Sliders */
+#price-slider,
+#year-slider,
+#size-slider {
+    margin-top: 10px;
+}
+
+.rc-slider-track-1,
+.rc-slider-mark{
+    color: var(--strong-green);
+    background-color: var(--strong-green);
+}
+
+.rc-slider-handle-click-focused:focus {
+    border-color: var(--strong-green);
+    background-color: #fff;
+}
+
+.rc-slider-handle {
+    border: solid 2px var(--strong-green);
+    background-color: #fff;
+}
+.rc-slider-handle:hover,
+.rc-slider-handle-dragging {
+    border-color: var(--strong-green);
+}
+
+.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
+    border-color: var(--strong-green);
+    box-shadow: 0 0 0 5px var(--medium-green);
+}
+
+/* Lottie */
+.lottie-wrapper * {
+    margin: 0px 0px 0px 0px;
+}
+
+#lottie-wrapper {
+    width: 150px;
+    position: relative; left: -80px;
+}
+
+.header-lottie > *{
+    margin: 0px 0px 0px 0px;
+}
+
+[aria-label] {
+    margin: 0px 0px 0px 0px;
+}
+
+/* flexbox */
+.flexbox-container {
+    display: flex;
+    justify-content: space-between
+}
+
+.flexbox-item {
+    width: 100%;
+    /*border: 2px solid #333;*/
+    border-radius: 25px;
+    padding: 10px;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+/* Main-grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: 450px 450px 450px;
+    grid-auto-rows: minmax(300px, auto);
+    column-gap: 25px;
+    row-gap: 25px;
+    /* margin: 2% 5% 2% 5%; */
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 4vh;
+    margin-bottom: 6vh;
+    grid-template-areas:
+    "chart-3 keyfig keyfig"
+    "chart-1 map map"
+    "chart-2 pie-1 pie-2";
+}
+
+.grid-item {
+    /* border: black 2px solid; */
+    /* background-color: rgb(118, 212, 81); */
+    border-radius: 25px;
+    padding: 20px;
+    /* border: 2px solid var(--strong-green); */
+}
+
+/* grid layout */
+.grid-item-1 {
+    grid-column: span 2;
+    align-self: center;
+    justify-self: center;
+    
+}
+
+.grid-item-3 {
+    grid-area: chart-3;
+    align-self: center;
+    /* background: linear-gradient(90deg, #65b34e 0%, #5daf47 43%, #58B505 100%); */
+    font-weight: bolder;
+    font-family: 'Palanquin';
+}
+
+.grid-item-4 {
+    grid-area: chart-1
+}
+
+.grid-item-7 {
+    grid-area: chart-2;
+}
+
+.grid-item-5,
+.grid-item-6 {
+    grid-area: map;
+}
+
+.grid-item-8 {
+    grid-area: pie-1
+}
+
+.grid-item-9 {
+    grid-area: pie-2
+}
+/* .grid-item-7 {
+    max-height: 450px;
+    justify-items: center;
+} */
+
+/* keyfig layout */
+
+.keyfig-container {
+    display: grid;
+    grid-template-columns: 900px;
+    grid-auto-rows: minmax(50px, auto);
+    gap: 2px;
+    justify-content: start;
+    padding: 2px;
+    /* border: 2px solid blue; */
+    justify-self: center;
+}
+
+.keyfig-row {
+    display: grid;
+    grid-template-columns: 250px 200px 350px;
+    grid-auto-rows: minmax(60px, auto);
+    /* border: 1px solid black; */
+    justify-content: start;
+    align-content: center;
+    padding: 2px;
+}
+
+.keyfig-row-2 {
+    align-self: flex-end;
+}
+
+.labels-item,
+.values-item {
+    /* border: 1px solid red; */
+    text-align: center;
+    align-items: center;
+    justify-content: start;
+}
+
+.labels-item {
+    font-family: 'Palanquin';
+    font-size: medium;
+    align-self: flex-end;
+}
+
+.values-item {
+    margin-top: 2vh;
+    font-size: small;
+}
+
+.my-dash-app {
+    overflow: auto;
+}
+
+.flexbox-item-1 {
+    width: 32px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+}
+
+/* info icon */
+.info-text {
+    margin-top: 32px;
+    opacity: 0.90;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    border: solid 1px black;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, .3);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+}
+
+.info-text:hover {
+    -webkit-box-shadow: 0px 0px 3px 2px var(--strong-green);
+    -moz-box-shadow: 0px 0px 8px 2px light green;
+    box-shadow: 0px 0px 8px 2px light blue;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    z-index: 9999999;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 320px;
+    background-color: var(--strong-green);
+    color: #fff;
+    text-align: start;
+    padding: 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    margin: 10px;
+}
+
+.info-text-i {
+    opacity: 0.3;
+}
+
+/* listings count */
+.listcount {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.listcount-title {
+    height: 115px;
+    align-self: center;
+    font-size: 48px;
+    text-align: center;
+    text-justify: center;
+    font-family: 'Palanquin';
+}
+
+.listcount-num {
+    height: 115px;
+    align-self: center;
+    font-size: 48px;
+    text-align: center;
+    text-justify: center;
+    margin-top: 1vh;
+}
+
+/* pies */
+#types-pie,
+#rooms-pie {
+    align-self: center;
+    position: relative;
+    top: 100px;
+}
+/* ********* OLD **************** */
+/* Title
 #title-p1 {
     font-family: "Palanquin";
     color: #F94F55;
@@ -57,7 +403,7 @@ html {
 }
 
 /* replace */
-#key-figs{
+/* #key-figs{
     margin-bottom: 6vh;
 }
 
@@ -68,10 +414,10 @@ html {
 #key-fig {
     font-family: 'Fira Code Bold', monospace;
     color: #000000;
-}
+} */
 
 /* animation demo */
-@property --num {
+/* @property --num {
     syntax: '<integer>';
     initial-value: 0;
     inherits: false;
@@ -88,15 +434,15 @@ html {
 
 #test-div::after {
     content: counter(num)
-}
+} */
 
 /* ui-revamp */
-.graph__container {
+/* .graph__container {
     /*background-color: #868889;*/
-    border-radius: 0.75rem;
+    /* border-radius: 0.75rem; */
     /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
-    padding: 10px 15px 10px 15px;
-}
+    /* padding: 10px 15px 10px 15px;
+} */
 
 /* .Select-control {
     padding: 5px 5px 5px 5px;
