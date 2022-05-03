@@ -384,6 +384,25 @@ div.row {
     position: relative;
     top: 100px;
 }
+
+/* random */
+.grid-title {
+    text-align: start;
+    margin-left: 2vw;
+}
+
+/* .rc-slider-tooltip-inner::after {
+    content: "€";
+} */
+
+text > .bartext > * {
+    content: " €";
+}
+
+text.bartext-outside > * {
+    content: " €";
+}
+
 /* ********* OLD **************** */
 /* Title
 #title-p1 {

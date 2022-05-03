@@ -21,6 +21,10 @@ df.dropna(subset=["Price", "Rooms", "Size", "Type", "Year"], inplace=True)
 df = df.astype({"Price": "int", "Year": "int", "Size": "int"})
 df = df.sort_values(by=["Price"])
 
+# Translate house types from Finnish to English
+df["Type"] = df["Type"].str.replace("Kerrostalo", "Apartment").replace("Omakotitalo", "House").replace("Rivitalo", "Rowhouse").replace("Luhtitalo", "Loft")
+df["Rooms"] = df["Rooms"].str.replace("1H", "1R").replace("2H", "2R").replace("3H", "3R").replace("4H", "4R").replace("5H", "5R").replace("6H", "6R")
+
 # Create a new column, "Price_M2", which calculates €/m² for every row
 df["Price_M2"] = df.apply(lambda row: row.Price / row.Size, axis=1)
 
@@ -79,7 +83,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             ),
         ]),
         html.Div(className="flexbox-item flexbox-item-4", children=[
-            html.Label(id="price-label", children="Price:"),
+            html.Label(id="price-label", children="Price (€):"),
             dcc.RangeSlider(
                 id="price-slider",
                 className="dbc",
@@ -105,7 +109,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             ),
         ]),
         html.Div(className="flexbox-item flexbox-item-6", children=[
-        html.Label(id="size-label", children="Size:"),
+        html.Label(id="size-label", children="Size (m²):"),
             dcc.RangeSlider(
                 id="size-slider",
                 className="dbc",
@@ -148,7 +152,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.Div(id="listings-count", className="listcount")
         ]),
         html.Div(className="grid-item grid-item-4", children=[
-            html.Span(className="median-em", children="Median €/m² by region"),
+            html.Div(className="grid-title", children="Median €/m² by region"),
             dcc.Graph(id="price-m2-median-by-loc")
         ]),
         html.Div(className="grid-item grid-item-5", children=[
@@ -160,14 +164,15 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.P("Testi")
         ]),
         html.Div(className="grid-item grid-item-7", children=[
+            html.Div(className="grid-title", children="Price distribution"),
             dcc.Graph(id="price-distrib")
         ]),
         html.Div(className="grid-item grid-item-8", children=[
-            html.Span("Distribution of types"),
+            html.Div(className="grid-title", children="Distribution of types"),
             dcc.Graph(id="types-pie")
         ]),
         html.Div(className="grid-item grid-item-9", children=[
-            html.Span("Distribution of rooms"),
+            html.Div(className="grid-title", children="Distribution of rooms"),
             dcc.Graph(id="rooms-pie")
         ]),
     ]),
@@ -354,7 +359,7 @@ def update_price_horizontal(data):
     figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}), 
     # title= {"text": "Median €/m² by location", "x": 0.01, "xanchor": "left", "font_family": "Fira Code", "font_size": 18})
-    figure.update_traces(marker_color="#58B505", textposition="outside", cliponaxis=False)
+    figure.update_traces(marker_color="#58B505", textposition="outside", cliponaxis=False, texttemplate='%{text} €')
     return figure
 
 # Update box plot
@@ -367,7 +372,7 @@ def update_box_plot(data):
     # figure = px.strip(df["Price"], y="Price")
     prices = df["Price"]
     figure = go.Figure()
-    figure.add_trace(go.Box(y = prices, marker_color="#58B505", boxpoints=False))
+    figure.add_trace(go.Box(y = prices, marker_color="#58B505", boxpoints=False, name="Price"))
     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
     return figure
 # # Update count of listings by location (horizontal bar chart)
