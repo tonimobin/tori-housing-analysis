@@ -43,6 +43,11 @@ body {
 div.row {
     height: 100%;
 }
+
+.my-dash-app {
+    overflow: auto;
+}
+
 /* Fonts */
 @font-face {
     font-family: "Fira Code";
@@ -238,11 +243,10 @@ div.row {
 } */
 
 /* keyfig layout */
-
 .keyfig-container {
     display: grid;
     grid-template-columns: 900px;
-    grid-auto-rows: minmax(50px, auto);
+    grid-auto-rows: minmax(25px, auto);
     gap: 2px;
     justify-content: start;
     padding: 2px;
@@ -253,38 +257,44 @@ div.row {
 .keyfig-row {
     display: grid;
     grid-template-columns: 250px 200px 350px;
-    grid-auto-rows: minmax(60px, auto);
+    grid-auto-rows: minmax(20px, auto);
     /* border: 1px solid black; */
     justify-content: start;
     align-content: center;
     padding: 2px;
+    justify-self: center;
 }
 
 .keyfig-row-2 {
     align-self: flex-end;
 }
 
+.keyfig-title {
+    font-size: small;
+}
+
 .labels-item,
 .values-item {
     /* border: 1px solid red; */
     text-align: center;
-    align-items: center;
-    justify-content: start;
+    /* align-items: center; */
+    /* justify-content: start; */
 }
 
 .labels-item {
     font-family: 'Palanquin';
-    font-size: medium;
+    font-size: large;
     align-self: flex-end;
 }
 
 .values-item {
-    margin-top: 2vh;
-    font-size: small;
+    /* margin-top: 2vh; */
+    font-size: medium;
 }
 
-.my-dash-app {
-    overflow: auto;
+.keyfig-percent {
+    margin-top: 4px;
+    font-size: small;
 }
 
 .flexbox-item-1 {
@@ -294,6 +304,24 @@ div.row {
     margin-left: 20px;
 }
 
+.year-test-pos,
+.perc-pos {
+    color: var(--strong-green);
+}
+
+.year-test-neg,
+.perc-neg {
+    color: red
+}
+
+.keyfig-tooltip {
+    /* border: 1px solid cyan; */
+    justify-content: end;
+    justify-items: end;
+    padding-left: 820px;
+    /* display: flex;
+    align-self: flex-end; */
+}
 /* info icon */
 .info-text {
     margin-top: 32px;
@@ -398,114 +426,3 @@ div.row {
     text-align: center;
     font-family: "Palanquin";
 }
-/* .rc-slider-tooltip-inner::after {
-    content: "€";
-} */
-
-/* ********* OLD **************** */
-/* Title
-#title-p1 {
-    font-family: "Palanquin";
-    color: #F94F55;
-    font-size: 64px;
-    text-align: start;
-    margin-right: 10px;
-    margin-bottom: 4vh;
-}
-
-#title-p2 {
-    font-family: "Palanquin";
-    font-size: 64px;
-    text-align: start;
-    margin-bottom: 4vh;
-}
-
-/* replace */
-/* #key-figs{
-    margin-bottom: 6vh;
-}
-
-#key-figs-title {
-    margin-bottom: 1vh;
-}
-
-#key-fig {
-    font-family: 'Fira Code Bold', monospace;
-    color: #000000;
-} */
-
-/* animation demo */
-/* @property --num {
-    syntax: '<integer>';
-    initial-value: 0;
-    inherits: false;
-}
-
-#test-div {
-    transition: --num 1s;
-    counter-reset: num var(--num);
-}
-
-#test-div:hover{
-    --num: 10000;
-}
-
-#test-div::after {
-    content: counter(num)
-} */
-
-/* ui-revamp */
-/* .graph__container {
-    /*background-color: #868889;*/
-    /* border-radius: 0.75rem; */
-    /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
-    /* padding: 10px 15px 10px 15px;
-} */
-
-/* .Select-control {
-    padding: 5px 5px 5px 5px;
-}
-
-.Select-multi-value-wrapper,
-.Select-placeholder {
-    text-align:left;
-} */
-/* Graphs 
-#example-graph {
-    padding: 40px 40px 60px 60px;
-} */
-
-/* Sliders
-#price-slider,
-#size-slider,
-#year-slider {
-    width: 30%;
-    padding: 10px 10px 5px 5px;
-    margin: 5px;
-}
-.rc-slider,
-.rc-slider-with-marks {
-    padding: 10px 10px 5px 5px;
-}
-
-Dropdowns */
-/* #housing-type-dropdown {
-    padding: 10px 10px 5px 5px;
-    width: 30%;
-}
-
-#location-dropdown {
-    width: 30%;
-}
-
-#housing-type-dropdown {
-    padding: 10px 10px 5px 5px;
-    width: 30%;
-}
-
-Labels
-#price-label,
-#year-label {
-    padding-top: 10px;
-    border-top: 10px;
-} */

@@ -1,8 +1,6 @@
-from turtle import width
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
-import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 import numpy as np
@@ -12,7 +10,6 @@ import dash_extensions as de
 from urllib.request import urlopen
 import json
 
-dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
 app = Dash(__name__)
 app.title = "Housing analysis"
 # Load the data, drop records with empty fields, convert num data to int and sort by price
@@ -38,9 +35,36 @@ with urlopen("https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland
     finland = json.load(response)
 
 # Lottie
-#lottie_url = "https://assets9.lottiefiles.com/private_files/lf30_p5tali1o.json"
 lottie_url = "https://assets9.lottiefiles.com/packages/lf20_v7lgcy3m.json"
 lottie_options = dict(loop=False, autoplay=True)
+
+# Dataset figures
+ttl_median_size = math.floor(df.Size.mean())
+ttl_median_euro_m2 = math.floor(df.Price.sum() / df.Size.sum())
+ttl_median_year = math.floor(df.Year.median())
+ttl_cheapest_listing = df.Price.min()
+ttl_most_expensive_listing = df.Price.max()
+ttl_median_price = df.Price.median()
+
+# Support functions
+def percentage(part, whole):
+  percentage = math.floor(100 * float(part)/float(whole))
+  percentage = percentage - 100
+  if percentage < 0:
+    return html.Div(className="perc-neg", children=f"{percentage} %")
+  if percentage > 0:    
+    return html.Div(className="perc-pos", children=f"+{percentage} %")
+  if percentage == 0:
+    return f"-"
+
+def year_comparison(year):
+    diff = year - ttl_median_year
+    if diff > 0:
+        return html.Div(className="year-test-pos", children=f"+{diff}")
+    if diff < 0:
+        return html.Div(className="year-test-neg", children=f"{diff}")
+    if diff == 0:
+        return f"-"
 
 app.layout = html.Div(className="my-dash-app", children=[
     # Store
@@ -50,7 +74,6 @@ app.layout = html.Div(className="my-dash-app", children=[
     html.Div(className="header row", children=[
         html.Div(id="lottie-wrapper", children=[de.Lottie(options=lottie_options,
                  width="75%", height="75%", url=lottie_url, className="header-lottie"), ]),
-        #html.Span(id="title-p1", children="tori.fi"),
         html.Span(id="header-title", children=" Housing Analysis"),
     ]),
 
@@ -123,15 +146,6 @@ app.layout = html.Div(className="my-dash-app", children=[
         ]),
         html.Div(className="flexbox-item flexbox-item-7", children=[
             html.Label("Rooms"),
-            # dcc.Checklist(
-            #     id="rooms-checklist",
-            #     #className="dbc",
-            #     options=[{"label": "" + x, "value": x} for x in rooms],
-            #     #inline=False,
-            #     #labelStyle={"display": "block"},
-            #     #style={"overflow": "auto"},
-            #     #labelClassName="mr-1"
-            # ),
             dcc.Dropdown(
                 id="rooms-dropdown",
                 options=[{"label": x, "value": x} for x in rooms],
@@ -188,8 +202,6 @@ app.layout = html.Div(className="my-dash-app", children=[
         target="_blank", children=[
             html.Img(className="footer-icon footer-icon-hy", src=app.get_asset_url("tori-logo-small.png")),
         ]),
-        #html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("GitHub-Mark-32px.png")),
-        #html.Span(""),
     ])
 ])
 
@@ -252,22 +264,42 @@ def update_keyfig(data):
         raise PreventUpdate
     df = pd.DataFrame(data)
     if len(df) > 0:
+        median_size = math.floor(df.Size.mean())
+        median_euro_m2 = math.floor(df.Price.sum() / df.Size.sum())
+        median_year = math.floor(df.Year.median())
+        cheapest_listing = df.Price.min()
+        most_expensive_listing = df.Price.max()
+        median_price = math.floor(df.Price.median())
         return [
+            # html.Div(className="keyfig-title", children="Percentages are compared to total dataset values"),
+            html.Div(className="keyfig-tooltip", children=[
+                html.Div(className="info-text tooltip", children=[
+                    html.Span(className="info-text-i", children="*"),
+                    html.Span(className="tooltiptext", children="""
+                    Percentages are compared to the complete dataset values.
+                    """)])
+            ]),
             html.Div(className="keyfig-row keyfig-row-1", children=[
                     html.Div(className="labels-item", children="Mean size"),
                     html.Div(className="labels-item", children="Mean €/m²"),
                     html.Div(className="labels-item", children="Median year of construction"),
-                    html.Div(className="values-item", children=f"{math.floor(df.Size.mean())} m²"),
-                    html.Div(className="values-item", children="{:,} €".format(math.floor(df.Price.sum() / df.Size.sum())).replace(",", " ")),
-                    html.Div(className="values-item", children=f"{math.floor(df.Year.median())}")
+                    html.Div(className="values-item", children=f"{median_size} m²"),
+                    html.Div(className="values-item", children="{:,} €".format(median_euro_m2).replace(",", " ")),
+                    html.Div(className="values-item", children=f"{median_year}"),
+                    html.Div(className="values-item keyfig-percent", children=[percentage(median_size, ttl_median_size)]),
+                    html.Div(className="values-item keyfig-percent", children=[percentage(median_euro_m2, ttl_median_euro_m2)]),
+                    html.Div(className="values-item keyfig-percent", children=[year_comparison(median_year)])
             ]),
             html.Div(className="keyfig-row keyfig-row-2", children=[
                     html.Div(className="labels-item", children="Cheapest listing"),
                     html.Div(className="labels-item", children="Most expensive"),
-                    html.Div(className="labels-item", children="Mean price"),
-                    html.Div(className="values-item", children="{:,} €".format(df.Price.min()).replace(",", " ")),
-                    html.Div(className="values-item", children="{:,} €".format(df.Price.max()).replace(",", " ")),
-                    html.Div(className="values-item", children="{:,} €".format(math.floor(df.Price.mean())).replace(",", " ")),
+                    html.Div(className="labels-item", children="Median price"),
+                    html.Div(className="values-item", children="{:,} €".format(cheapest_listing).replace(",", " ")),
+                    html.Div(className="values-item", children="{:,} €".format(most_expensive_listing).replace(",", " ")),
+                    html.Div(className="values-item", children="{:,} €".format(median_price).replace(",", " ")),
+                    html.Div(className="values-item keyfig-percent", children=[percentage(cheapest_listing, ttl_cheapest_listing)]),
+                    html.Div(className="values-item keyfig-percent", children=[percentage(most_expensive_listing, ttl_most_expensive_listing)]),
+                    html.Div(className="values-item keyfig-percent", children=[percentage(median_price, ttl_median_price)])
             ])
         ]
     else:
