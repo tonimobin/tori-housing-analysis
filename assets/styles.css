@@ -1,17 +1,8 @@
 /* Color palette */ 
 :root {
-    --first-color: #D08381;
-    --second-color: #c7e9b4;
-    --third-color: #7fcdbb;
-    --fourth-color: #41b6c4;
-    --fifth-color: #1d91c0;
-    --sixth-color: #225ea8;
-    --seventh-color: #0c2c84;
-    --tori-title: #F94F55;
     --strong-green: #58B505;
     --medium-green: #57cf36;
     --light-green: #D9FDB8;
-    --background-cream: rgba(240, 233, 204, 0.996);
 }
 
 /* Site-wide */
@@ -323,6 +314,11 @@ div.row {
     align-self: flex-end; */
 }
 /* info icon */
+.info-tooltip {
+    position: absolute;
+    top: 130px;
+    left: 22px;
+}
 .info-text {
     margin-top: 32px;
     opacity: 0.90;
@@ -425,4 +421,8 @@ div.row {
     font-size: 42px;
     text-align: center;
     font-family: "Palanquin";
+}
+
+.yaxislayer-above {
+    margin-right: 20px;
 }

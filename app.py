@@ -12,6 +12,7 @@ import json
 
 app = Dash(__name__)
 app.title = "Housing analysis"
+
 # Load the data, drop records with empty fields, convert num data to int and sort by price
 df = pd.read_csv("full_data_cleaned_and_outliers_removed.csv", sep=",")
 df.dropna(subset=["Price", "Rooms", "Size", "Type", "Year"], inplace=True)
@@ -40,7 +41,7 @@ lottie_options = dict(loop=False, autoplay=True)
 
 # Dataset figures
 ttl_median_size = math.floor(df.Size.mean())
-ttl_median_euro_m2 = math.floor(df.Price.sum() / df.Size.sum())
+ttl_median_euro_m2 = math.floor(df["Price_M2"].median())
 ttl_median_year = math.floor(df.Year.median())
 ttl_cheapest_listing = df.Price.min()
 ttl_most_expensive_listing = df.Price.max()
@@ -81,7 +82,7 @@ app.layout = html.Div(className="my-dash-app", children=[
     html.Div(className="flexbox-container row", children=[
         # Hoverable info panel
         html.Div(className="flexbox-item flexbox-item-1", children=[
-            html.Div(className="inner", children=[
+            html.Div(className="info-tooltip", children=[
                 html.Div(className="info-text tooltip", children=[
                     html.Span(className="info-text-i", children="i"),
                     html.Span(className="tooltiptext", children="""This application contains data from over 5000 housing listings from a Finnish peer-to-peer marketplace, Tori.fi. You can query the data with various options and the resulting data will be visualized below!""")])
@@ -160,7 +161,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             html.Div(id="key-figures", className="keyfig-container")
         ]),
         # html.Div(className="grid-item grid-item-2", children=[
-        #     html.P("Testi")
+        #     html.P("")
         # ]),
         html.Div(className="grid-item grid-item-3", children=[
             html.Div(id="listings-count", className="listcount")
@@ -175,7 +176,7 @@ app.layout = html.Div(className="my-dash-app", children=[
             ])
         ]),
         html.Div(className="grid-item grid-item-6", children=[
-            html.P("Testi")
+            html.P("")
         ]),
         html.Div(className="grid-item grid-item-7", children=[
             html.Div(className="grid-title", children="Price distribution"),
@@ -249,6 +250,7 @@ def update_price_horizontal(data):
         figure = px.bar(dff, x="€/m²", y="Location", orientation="h", labels={"Location": "", "€/m²": ""}, text="€/m²")
         figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"}), 
         figure.update_traces(marker_color="#58B505", textposition="outside", cliponaxis=False, texttemplate='%{text} €')
+        figure.update_xaxes(showticklabels=False)
         return figure
     else:
         figure = go.Figure(data=[])
@@ -265,13 +267,13 @@ def update_keyfig(data):
     df = pd.DataFrame(data)
     if len(df) > 0:
         median_size = math.floor(df.Size.mean())
-        median_euro_m2 = math.floor(df.Price.sum() / df.Size.sum())
+        # median_euro_m2 = math.floor(df.Price.sum() / df.Size.sum())
+        median_euro_m2 = math.floor(df["Price_M2"].median())
         median_year = math.floor(df.Year.median())
         cheapest_listing = df.Price.min()
         most_expensive_listing = df.Price.max()
         median_price = math.floor(df.Price.median())
         return [
-            # html.Div(className="keyfig-title", children="Percentages are compared to total dataset values"),
             html.Div(className="keyfig-tooltip", children=[
                 html.Div(className="info-text tooltip", children=[
                     html.Span(className="info-text-i", children="*"),
@@ -281,7 +283,7 @@ def update_keyfig(data):
             ]),
             html.Div(className="keyfig-row keyfig-row-1", children=[
                     html.Div(className="labels-item", children="Mean size"),
-                    html.Div(className="labels-item", children="Mean €/m²"),
+                    html.Div(className="labels-item", children="Median €/m²"),
                     html.Div(className="labels-item", children="Median year of construction"),
                     html.Div(className="values-item", children=f"{median_size} m²"),
                     html.Div(className="values-item", children="{:,} €".format(median_euro_m2).replace(",", " ")),
@@ -317,13 +319,11 @@ def update_listings_count(data):
     df = pd.DataFrame(data)
     if len(df) < 0:
         return [
-            html.Div("ainaki 432424")
+            html.Div("No data available.")
         ]
     else:
         return [
-            html.Div(className="listcount-title", children=
-"Amount of listings"
-            ),
+            html.Div(className="listcount-title", children="Amount of listings"),
             html.Div(className="listcount-num", children=[
                 html.Div(f"{len(df)}")
             ])
@@ -369,7 +369,7 @@ def update_box_plot(data):
         figure.update_yaxes(visible=False)
         return figure
 
-# # Update types pie chart
+# Update types pie chart
 @app.callback(Output("types-pie", "figure"),
               Input("memory-output", "data"))
 def update_types_pie(data):
@@ -398,7 +398,7 @@ def update_types_pie(data):
         figure.update_yaxes(visible=False)
         return figure
 
-#Update rooms pie chart (to:do prevent empty dataset error for this & type)
+# Update rooms pie chart (to:do prevent empty dataset error for this & type)
 @app.callback(Output("rooms-pie", "figure"),
               Input("memory-output", "data"))
 def update_rooms_pie(data):
