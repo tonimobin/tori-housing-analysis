@@ -391,17 +391,16 @@ div.row {
     margin-left: 2vw;
 }
 
+.empty-data-error {
+    color: red;
+    align-self: center;
+    font-size: 42px;
+    text-align: center;
+    font-family: "Palanquin";
+}
 /* .rc-slider-tooltip-inner::after {
     content: "€";
 } */
-
-text > .bartext > * {
-    content: " €";
-}
-
-text.bartext-outside > * {
-    content: " €";
-}
 
 /* ********* OLD **************** */
 /* Title
