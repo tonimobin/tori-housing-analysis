@@ -1,3 +1,4 @@
+from turtle import width
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
@@ -7,7 +8,9 @@ import numpy as np
 import plotly.graph_objs as go
 import math
 import dash_extensions as de
+import dash_leaflet as dl
 from urllib.request import urlopen
+from dash_extensions.javascript import Namespace
 import json
 
 app = Dash(__name__)
@@ -172,7 +175,8 @@ app.layout = html.Div(className="my-dash-app", children=[
         ]),
         html.Div(className="grid-item grid-item-5", children=[
             html.Div(className="map-container", children=[
-                dcc.Graph(id="count-map")
+                # dcc.Graph(id="count-map")
+                html.Div(id="count-map")
             ])
         ]),
         html.Div(className="grid-item grid-item-6", children=[
@@ -330,25 +334,35 @@ def update_listings_count(data):
         ]
 
 # Map callback
-@app.callback(Output("count-map", "figure"), Input("memory-output", "data"))
+@app.callback(Output("count-map", "children"), Input("memory-output", "data"))
 def update_map(data):
     if data is None:
         raise PreventUpdate
     df = pd.DataFrame(data)
-    if len(df) > 0:
-        # create a new df with location and count of listings in the location
-        loc_counts = df["Location"].value_counts().reset_index()
-        loc_counts.columns = ["Location", "Count"]
-        locations = ["Helsinki", "Lappi"]
-        figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Greens", range_color=(0,12), scope="europe")
-        figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-        return figure
-    else:
-        figure = go.Figure(data=[])
-        figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
-        figure.update_xaxes(visible=False)
-        figure.update_yaxes(visible=False)
-        return figure
+    ns = Namespace("myNamespace", "mySubNamespace")
+    geoj = dl.GeoJSON(data=finland, options=dict(pointToLayer=ns("pointToLayer")))
+    return [
+        dl.Map([dl.TileLayer(), geoj], center=(56, 10), zoom=8, style={"width" : "800", "height" : "400px"})
+        
+    ]
+
+    # if len(df) > 0:    
+    #     return
+    # else:
+    #     return
+    #     # create a new df with location and count of listings in the location
+    #     loc_counts = df["Location"].value_counts().reset_index()
+    #     loc_counts.columns = ["Location", "Count"]
+    #     locations = ["Helsinki", "Lappi"]
+    #     figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Greens", range_color=(0,12), scope="europe")
+    #     figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    #     return figure
+    # else:
+    #     figure = go.Figure(data=[])
+    #     figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
+    #     figure.update_xaxes(visible=False)
+    #     figure.update_yaxes(visible=False)
+    #     return figure
 
 # Update price distribution box plot
 @app.callback(Output("price-distrib", "figure"), Input("memory-output", "data"))
