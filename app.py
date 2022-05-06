@@ -1,4 +1,3 @@
-from turtle import width
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
@@ -10,7 +9,8 @@ import math
 import dash_extensions as de
 import dash_leaflet as dl
 from urllib.request import urlopen
-from dash_extensions.javascript import Namespace
+from dash_extensions.javascript import Namespace, arrow_function
+import geopandas as gpd
 import json
 
 app = Dash(__name__)
@@ -35,6 +35,7 @@ locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
 
 # Map
+finland_url = "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json"
 with urlopen("https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json") as response:
     finland = json.load(response)
 
@@ -339,10 +340,18 @@ def update_map(data):
     if data is None:
         raise PreventUpdate
     df = pd.DataFrame(data)
+    loc_counts = df["Location"].value_counts().reset_index()
+    loc_counts.columns = ["Location", "Count"]
     ns = Namespace("myNamespace", "mySubNamespace")
-    geoj = dl.GeoJSON(data=finland, options=dict(pointToLayer=ns("pointToLayer")))
+    hover_style = dict(weight=6, fillColor="#57cf36", fillOpacity=1)
+    geo_df = gpd.read_file(finland_url)
+    print("type of geo_df: ", type(geo_df))
+    region_names = geo_df.copy(deep=True)
+    region_names["tooltip"] = geo_df.name
+    layer = dl.GeoJSON(data=json.loads(region_names.to_json()))
+    geoj = dl.GeoJSON(data=finland, hoverStyle=arrow_function(hover_style), options=dict(pointToLayer=ns("pointToLayer"), style=dict(color="#58B505")))
     return [
-        dl.Map([dl.TileLayer(), geoj], center=(56, 10), zoom=8, style={"width" : "800", "height" : "400px"})
+        dl.Map([layer, dl.TileLayer()], center=(65.5, 25), zoom=5, style={"width" : "400", "height" : "600px"})
         
     ]
 

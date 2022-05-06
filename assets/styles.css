@@ -426,3 +426,7 @@ div.row {
 .yaxislayer-above {
     margin-right: 20px;
 }
+
+#count-map {
+    border-radius: 25px;
+}

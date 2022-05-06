@@ -5,3 +5,10 @@ window.myNamespace = Object.assign({}, window.myNamespace, {
         }  
     }  
 });
+
+L.geoJSON(seine_mar,{
+    onEachFeature: function(feature, layer){
+      layer.bindTooltip('Hi there', {permanent: true}).openTooltip(); 
+      // or over a feature property layer.bindTooltip(feature.properties.customTitle)
+    }
+   }).addTo(map)
