@@ -427,6 +427,6 @@ div.row {
     margin-right: 20px;
 }
 
-#count-map {
-    border-radius: 25px;
+.map-title {
+    margin-bottom: 4vh;
 }
