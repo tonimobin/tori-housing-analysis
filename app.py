@@ -7,7 +7,10 @@ import numpy as np
 import plotly.graph_objs as go
 import math
 import dash_extensions as de
+import dash_leaflet as dl
 from urllib.request import urlopen
+from dash_extensions.javascript import Namespace, arrow_function
+import geopandas as gpd
 import json
 
 app = Dash(__name__)
@@ -16,15 +19,23 @@ app.title = "Housing analysis"
 # Load the data, drop records with empty fields, convert num data to int and sort by price
 df = pd.read_csv("full_data_cleaned_and_outliers_removed.csv", sep=",")
 df.dropna(subset=["Price", "Rooms", "Size", "Type", "Year"], inplace=True)
+# Ahvenanmaa has to be dropped, because the geojson for the map doesn't contain it and thus can't visualize it
+df.drop(df[df["Location"] == "Ahvenanmaa"].index, inplace=True)
 df = df.astype({"Price": "int", "Year": "int", "Size": "int"})
 df = df.sort_values(by=["Price"])
 
-# Translate house types from Finnish to English
+# Translate house types & regions from Finnish to English
 df["Type"] = df["Type"].str.replace("Kerrostalo", "Apartment").replace("Omakotitalo", "House").replace("Rivitalo", "Rowhouse").replace("Luhtitalo", "Loft")
 df["Rooms"] = df["Rooms"].str.replace("1H", "1R").replace("2H", "2R").replace("3H", "3R").replace("4H", "4R").replace("5H", "5R").replace("6H", "6R")
-
+# The regions are translated manually, because of the differences between tori and geojson naming conventions
+df = df.replace({"Location" : {"Etelä-Karjala" : "South Karelia", "Etelä-Pohjanmaa" : "Southern Ostrobothnia", "Etelä-Savo" : "Southern Savonia", 
+"Kainuu" : "Kainuu", "Kanta-Häme" : "Tavastia Proper", "Keski-Pohjanmaa" : "Central Ostrobothnia", "Keski-Suomi" : "Central Finland",
+ "Kymenlaakso" : "Kymenlaakso", "Lappi" : "Lapland", "Pirkanmaa" : "Pirkanmaa", "Pohjanmaa" : "Ostrobothnia", "Pohjois-Karjala" : "North Karelia", 
+ "Pohjois-Pohjanmaa" : "Northern Ostrobothnia", "Pohjois-Savo" : "Northern Savonia", "Päijät-Häme" : "Päijät-Häme", "Satakunta" : "Satakunta",
+ "Uusimaa" : "Uusimaa", "Varsinais-Suomi" : "Finland Proper"}})
 # Create a new column, "Price_M2", which calculates €/m² for every row
 df["Price_M2"] = df.apply(lambda row: row.Price / row.Size, axis=1)
+
 
 # Support variables for callback functions
 housing_types = np.sort(df["Type"].unique())
@@ -32,7 +43,8 @@ locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
 
 # Map
-with urlopen("https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json") as response:
+#finland_url = "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json"
+with open("Finland.json") as response:
     finland = json.load(response)
 
 # Lottie
@@ -172,7 +184,8 @@ app.layout = html.Div(className="my-dash-app", children=[
         ]),
         html.Div(className="grid-item grid-item-5", children=[
             html.Div(className="map-container", children=[
-                dcc.Graph(id="count-map")
+                # dcc.Graph(id="count-map")
+                html.Div(id="count-map")
             ])
         ]),
         html.Div(className="grid-item grid-item-6", children=[
@@ -330,26 +343,27 @@ def update_listings_count(data):
         ]
 
 # Map callback
-@app.callback(Output("count-map", "figure"), Input("memory-output", "data"))
+@app.callback(Output("count-map", "children"), Input("memory-output", "data"))
 def update_map(data):
     if data is None:
         raise PreventUpdate
     df = pd.DataFrame(data)
     if len(df) > 0:
-        # create a new df with location and count of listings in the location
         loc_counts = df["Location"].value_counts().reset_index()
         loc_counts.columns = ["Location", "Count"]
-        locations = ["Helsinki", "Lappi"]
-        figure = px.choropleth(loc_counts, geojson=finland, locations="Location", color="Count", color_continuous_scale="Greens", range_color=(0,12), scope="europe")
-        figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-        return figure
+        ns = Namespace("myNamespace", "mySubNamespace")
+        hover_style = dict(weight=6, fillColor="#57cf36", fillOpacity=0.3)
+        geo_df = gpd.read_file("Finland.json")
+        region_names = geo_df.copy(deep=True)
+        region_names["tooltip"] = geo_df.name + "<br>" + f"Listings: " + geo_df.listing_count + "<br>" + f"Median €/m²: " + geo_df.median_price
+        geoj = dl.GeoJSON(data=json.loads(region_names.to_json()), hoverStyle=arrow_function(hover_style), options=dict(pointToLayer=ns("pointToLayer"), style=dict(color="#58B505")))
+        return [
+            html.Div(className="map-title", children="Location reference & data based on full dataset"),
+            dl.Map([geoj, dl.TileLayer()], center=(61.5, 25), zoom=6, style={"height" : "310px"})
+            
+        ]
     else:
-        figure = go.Figure(data=[])
-        figure.update_layout({"plot_bgcolor": "rgba(0,0,0,0)"})
-        figure.update_xaxes(visible=False)
-        figure.update_yaxes(visible=False)
-        return figure
-
+        return html.Div("Location reference & data based on full dataset")
 # Update price distribution box plot
 @app.callback(Output("price-distrib", "figure"), Input("memory-output", "data"))
 def update_box_plot(data):
@@ -398,7 +412,7 @@ def update_types_pie(data):
         figure.update_yaxes(visible=False)
         return figure
 
-# Update rooms pie chart (to:do prevent empty dataset error for this & type)
+# Update rooms pie chart
 @app.callback(Output("rooms-pie", "figure"),
               Input("memory-output", "data"))
 def update_rooms_pie(data):
