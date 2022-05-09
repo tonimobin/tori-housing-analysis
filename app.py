@@ -43,8 +43,8 @@ locations = np.sort(df["Location"].unique())
 rooms = np.sort(df["Rooms"].unique())
 
 # Map
-finland_url = "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json"
-with urlopen("https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json") as response:
+#finland_url = "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/Finland.json"
+with open("Finland.json") as response:
     finland = json.load(response)
 
 # Lottie
@@ -353,9 +353,9 @@ def update_map(data):
         loc_counts.columns = ["Location", "Count"]
         ns = Namespace("myNamespace", "mySubNamespace")
         hover_style = dict(weight=6, fillColor="#57cf36", fillOpacity=0.3)
-        geo_df = gpd.read_file(finland_url)
+        geo_df = gpd.read_file("Finland.json")
         region_names = geo_df.copy(deep=True)
-        region_names["tooltip"] = geo_df.name + "<br>" + f"Listings: {len(df)}" + "<br>" + f"Median €/m²: "
+        region_names["tooltip"] = geo_df.name + "<br>" + f"Listings: " + geo_df.listing_count + "<br>" + f"Median €/m²: " + geo_df.median_price
         geoj = dl.GeoJSON(data=json.loads(region_names.to_json()), hoverStyle=arrow_function(hover_style), options=dict(pointToLayer=ns("pointToLayer"), style=dict(color="#58B505")))
         return [
             html.Div(className="map-title", children="Location reference & data based on full dataset"),
