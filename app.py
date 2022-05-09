@@ -14,6 +14,7 @@ import geopandas as gpd
 import json
 
 app = Dash(__name__)
+server = app.server
 app.title = "Housing analysis"
 
 # Load the data, drop records with empty fields, convert num data to int and sort by price
