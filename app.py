@@ -206,7 +206,7 @@ app.layout = html.Div(className="my-dash-app", children=[
         ]),
     ]),
     html.Footer(className="footer row", children=[
-        html.A(href="https://github.com/tonimobin/tori-housing-data-scrape-script", target="_blank", children=[
+        html.A(href="https://github.com/tonimobin/tori-housing-analysis", target="_blank", children=[
             html.Img(className="footer-icon footer-icon-gh", src=app.get_asset_url("github-logo-small.png")),
         ]),
         html.A(href="https://studies.helsinki.fi/courses/cur/hy-opt-cur-2122-f77f1644-2bfe-4693-a6bb-47596553c0c4/Interactive_Data_Visualization_Lectures",
