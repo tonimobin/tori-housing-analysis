@@ -14,15 +14,15 @@ The app itself provides different ways to query the data and then proceeds to vi
 
 ## Ideas for improvement
 - The app runs slow on Heroku, which is partly because of Heroku's limited resources but also because of inefficient structures within the app. These structures could have been made more efficient, i.e. pre-processing data (more) outside the app, making 
-- Make the code more modular. Most of the functionality is stuffed in the same [aoo.py](app.py) file. 
+- Make the code more modular. Most of the functionality is stuffed in the same [app.py](app.py) file. The code could also benefit from a small refactoring process, unifying the naming conventions and so on. Tests.
 - The [Leaflet](https://leafletjs.com/) based map isn't as interactive as it could & should be, there's plenty of room for improvement (course deadline arrived earlier than the understanding of how to use Leaflet properly 🙂)
 
 ## Learned during development
 - Better understanding of the combination of numpy, pandas and python itself in order to manipulate and wrangle data to a format that suits your needs.
 - Utilizing Dash & Plotly to create visualization focused web apps. Before this project I had no idea how to approach the inclusion of visualizations within a web app, but now I've got a good basic understanding of what is required.
 - Basics of web scraping, what is it based on and the challenges associated.
-- Lots of minor things i.e. more in-depth understanding of CSS grid & flex and how to utilize them in order to build structure for your web application, using [LottieFiles](https://lottiefiles.com/) for the first time in order to use small animations on the site,   
-- 
+- Lots of minor things i.e. more in-depth understanding of CSS grid & flex and how to utilize them in order to build structure for your web application, using [LottieFiles](https://lottiefiles.com/) for the first time in order to use small animations on the site. 
+
 ## Could have done differently
 - I deployed the app to Heroku very last minute and it is here where I noticed that the app actually runs very slow compared to running locally. I suppose the deployment should've been done early on, because I could've then tried to optimize the performance during development.
 -  A better planning process. I was very keen on starting the development right away, because I felt like I wanted to start learning Dash right away. I do feel like I could've benefitted from doing a more in-depth plan before starting the actual code development.
